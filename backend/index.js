@@ -11,7 +11,12 @@ const app = express();
 const port = process.env.SERVER_PORT;
 const appOrigin = process.env.REACT_APP_API_ORIGIN;
 
-app.use(cors({ origin: appOrigin }));
+const corsOptions = {
+  origin: ['https://meliora-frontend.vercel.app'], // Allow specific domains
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(
