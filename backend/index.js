@@ -12,7 +12,7 @@ const port = process.env.SERVER_PORT;
 const appOrigin = process.env.REACT_APP_API_ORIGIN;
 
 const corsOptions = {
-  origin: ['https://meliora-frontend.vercel.app','www.melioraproducts.com'],
+  origin: ['https://meliora-frontend.vercel.app','https://www.melioraproducts.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
