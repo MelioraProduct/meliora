@@ -4,7 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const path = require("path");
-const connection = require("./db");
+const connection = require("./config/db");
 const router = require("./routers/router");
 
 const app = express();
@@ -12,10 +12,14 @@ const port = process.env.SERVER_PORT;
 const appOrigin = process.env.REACT_APP_API_ORIGIN;
 
 const corsOptions = {
-  origin: ['https://meliora-frontend.vercel.app','https://www.melioraproducts.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  origin: [
+    "https://meliora-frontend.vercel.app",
+    "https://www.melioraproducts.com",
+    "http://localhost:3000",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(express.json());

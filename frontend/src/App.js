@@ -26,6 +26,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API_ORIGIN;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const router = createBrowserRouter([
+  // User routes
   {
     path: "/",
     element: <Home />,
