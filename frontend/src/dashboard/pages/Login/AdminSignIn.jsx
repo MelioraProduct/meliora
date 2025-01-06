@@ -107,7 +107,7 @@ export default function AdminSignIn() {
         />
       )}
       <div className={styles.card}>
-        <h1 className={styles.heading}>Sign In</h1>
+        <h1 className={styles.heading}>Admin Sign In</h1>
         <form method='POST' className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <label htmlFor='email' className={styles.label}>

@@ -17,19 +17,6 @@ exports.createProduct = async (req, res) => {
       backImage,
     } = req.body;
 
-    // const files = req.files || {};
-    // Object.keys(files).forEach((key) => {
-    //   if (key.startsWith("steps[step")) {
-    //     const stepNumber = key.match(/steps\[step(\d+)\]/)[1];
-    //     if (files[key] && files[key][0]) {
-    //       steps[`step${stepNumber}`].image = `${req.protocol}://${req.get(
-    //         "host"
-    //       )}/images/uploads/products/usage/${files[key][0].filename}`;
-    //     }
-    //   }
-    // });
-
-    // Create a new product instance
     const newProduct = new Product({
       name,
       detail,
@@ -47,7 +34,7 @@ exports.createProduct = async (req, res) => {
     const savedProduct = await newProduct.save();
 
     res
-      .status(201)
+      .status(200)
       .json({ message: "Product created successfully", product: savedProduct });
   } catch (error) {
     console.error("Error creating product:", error.message);
@@ -92,7 +79,7 @@ exports.updateProduct = async (req, res) => {
       usageTitle,
       steps,
       frontImage,
-      backImage
+      backImage,
     } = req.body;
 
     const updatedProduct = await Product.findByIdAndUpdate(

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import styles from "./style.module.css";
+import CustomAlert from "../../../components/CustomAlert";
 import axios from "axios";
 
 // Transform data to the required schema for API
@@ -43,6 +44,7 @@ const transformDataToSchema = (formData) => {
 
 export default function AddModal({ onClose, product = {} }) {
   const [uploadedUrl, setUploadedUrl] = useState("");
+  const [alert, setAlert] = useState({ type: "", text: "", open: false });
   const stepKeys = ["step1", "step2", "step3"];
   const [currentProduct, setCurrentProduct] = useState({
     name: product.name || "",
@@ -79,6 +81,10 @@ export default function AddModal({ onClose, product = {} }) {
     },
   });
 
+  // handler functions
+  const handleCloseAlert = () => {
+    setAlert((prev) => ({ ...prev, open: false }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -86,10 +92,34 @@ export default function AddModal({ onClose, product = {} }) {
 
       if (!product._id) {
         const response = await axios.post("/products", send);
-        alert("Product added successfully");
+        if (response.status === 200) {
+          setAlert({
+            type: "success",
+            text: "Product added successfully",
+            open: true,
+          });
+        } else {
+          setAlert({
+            type: "error",
+            text: "Failed to add product",
+            open: true,
+          });
+        }
       } else {
         const response = await axios.put(`/products/${product._id}`, send);
-        alert("Product updated successfully");
+        if (response.status === 200) {
+          setAlert({
+            type: "success",
+            text: "Product updated successfully",
+            open: true,
+          });
+        } else {
+          setAlert({
+            type: "error",
+            text: "Failed to update product",
+            open: true,
+          });
+        }
       }
     } catch (error) {
       console.error("Error adding/updating Product:", error);
@@ -98,7 +128,6 @@ export default function AddModal({ onClose, product = {} }) {
       console.log(message);
     }
   };
-
   const handleInputChange = (e, key, subKey = null) => {
     const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
     setCurrentProduct((prev) => ({
@@ -106,7 +135,6 @@ export default function AddModal({ onClose, product = {} }) {
       [key]: subKey ? { ...prev[key], [subKey]: value } : value,
     }));
   };
-
   const handleStepChange = (e, stepKey, key) => {
     const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
     setCurrentProduct((prev) => ({
@@ -132,18 +160,19 @@ export default function AddModal({ onClose, product = {} }) {
     console.log(formData);
 
     try {
-      const response = await axios.post("/products/upload", formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          responseType: 'json',
-        });
+      const response = await axios.post("/products/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        responseType: "json",
+      });
 
       setUploadedUrl(response.data.url);
       setCurrentProduct((prev) => ({
         ...prev,
-        [key]: subKey ? { ...prev[key], [subKey]: response.data.url } : response.data.url,
+        [key]: subKey
+          ? { ...prev[key], [subKey]: response.data.url }
+          : response.data.url,
       }));
     } catch (error) {
       console.error("Upload failed:", error);
@@ -162,13 +191,12 @@ export default function AddModal({ onClose, product = {} }) {
     console.log(formData);
 
     try {
-      const response = await axios.post("/products/upload", formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          responseType: 'json',
-        });
+      const response = await axios.post("/products/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        responseType: "json",
+      });
 
       setUploadedUrl(response.data.url);
       setCurrentProduct((prev) => ({
@@ -186,8 +214,17 @@ export default function AddModal({ onClose, product = {} }) {
       alert("Failed to upload the image.");
     }
   };
+
   return (
     <div className={styles.modaloverlay}>
+      {alert.open && (
+        <CustomAlert
+          type={alert.type}
+          text={alert.text}
+          show={alert.open}
+          onClose={handleCloseAlert}
+        />
+      )}
       <form
         encType='multipart/form-data'
         className={styles.modalcontent}
@@ -249,57 +286,52 @@ export default function AddModal({ onClose, product = {} }) {
             </div>
             <h4 style={{ fontWeight: "bold" }}>Sizes and Quantity</h4>
             <div className={styles.row}>
-              {/* Sizes Column */}
               <div className={styles.column}>
                 {["small", "medium", "large", "xl"].map((size) => (
-                  <div key={size}>
-                    <input
-                      type='checkbox'
-                      id={size}
-                      value={size.charAt(0).toUpperCase() + size.slice(1)}
-                      onChange={(e) =>
-                        setCurrentProduct((prev) => ({
-                          ...prev,
-                          sizes: {
-                            ...prev.sizes,
-                            [size]: {
-                              selected: e.target.checked,
-                              quantity: prev.sizes[size].quantity,
+                  <div className={styles.inlineRow} key={size}>
+                    <div className={styles.inline}>
+                      <input
+                        type='checkbox'
+                        id={size}
+                        value={size.charAt(0).toUpperCase() + size.slice(1)}
+                        onChange={(e) =>
+                          setCurrentProduct((prev) => ({
+                            ...prev,
+                            sizes: {
+                              ...prev.sizes,
+                              [size]: {
+                                selected: e.target.checked,
+                                quantity: prev.sizes[size].quantity,
+                              },
                             },
-                          },
-                        }))
-                      }
-                    />
-                    <label style={{ marginLeft: "10px" }} htmlFor={size}>
-                      {size.charAt(0).toUpperCase() + size.slice(1)}
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              {/* Quantity Column */}
-              <div className={styles.column}>
-                {["small", "medium", "large", "xl"].map((size) => (
-                  <div key={size}>
-                    <label htmlFor={`${size}-quantity`}>Quantity:</label>
-                    <input
-                      type='number'
-                      id={`${size}-quantity`}
-                      disabled={!currentProduct.sizes[size].selected}
-                      value={currentProduct.sizes[size].quantity}
-                      onChange={(e) =>
-                        setCurrentProduct((prev) => ({
-                          ...prev,
-                          sizes: {
-                            ...prev.sizes,
-                            [size]: {
-                              ...prev.sizes[size],
-                              quantity: Math.max(0, Number(e.target.value)),
+                          }))
+                        }
+                      />
+                      <label htmlFor={size}>
+                        {size.charAt(0).toUpperCase() + size.slice(1)}
+                      </label>
+                    </div>
+                    <div className={styles.inline}>
+                      <label htmlFor={`${size}-quantity`}>Quantity:</label>
+                      <input
+                        type='number'
+                        id={`${size}-quantity`}
+                        disabled={!currentProduct.sizes[size].selected}
+                        value={currentProduct.sizes[size].quantity}
+                        onChange={(e) =>
+                          setCurrentProduct((prev) => ({
+                            ...prev,
+                            sizes: {
+                              ...prev.sizes,
+                              [size]: {
+                                ...prev.sizes[size],
+                                quantity: Math.max(0, Number(e.target.value)),
+                              },
                             },
-                          },
-                        }))
-                      }
-                    />
+                          }))
+                        }
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -311,7 +343,7 @@ export default function AddModal({ onClose, product = {} }) {
                 type='file'
                 name='frontImage'
                 id='frontImage'
-                onChange={(e) => handleFileChange(e, 'frontImage')}
+                onChange={(e) => handleFileChange(e, "frontImage")}
               />
               {product.frontImage && (
                 <img
@@ -328,7 +360,7 @@ export default function AddModal({ onClose, product = {} }) {
                 type='file'
                 name='backImage'
                 id='backImage'
-                onChange={(e) => handleFileChange(e, 'backImage')}
+                onChange={(e) => handleFileChange(e, "backImage")}
               />
               {product.backImage && (
                 <img
