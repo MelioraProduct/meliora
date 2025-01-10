@@ -206,7 +206,6 @@ input[type="checkbox"] {
   padding: 15px 20px;
   border-radius: 0.3rem;
   cursor: pointer;
-  border-radius: 12px;
 }
 
 .accountinfo form label {
@@ -559,24 +558,19 @@ button {
 
 .bloggrid {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
-  /* Defines the grid structure: 4 columns */
+  grid-template-columns: 0.5fr repeat(2, 1fr) 2fr 0.5fr;
   padding: 0;
   background-color: #216d9e;
-  border-radius: 12px;
-  /* Adds shadow for better visibility */
 }
 
 .header {
   font-size: 18px;
   font-weight: bold;
-  padding: 10px;
   background-color: rgb(33, 109, 158);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
-  margin-top: 20px;
+  margin: 1rem 0;
 }
 
 .productno,
@@ -595,7 +589,6 @@ button {
   justify-content: center;
   background-color: white;
   color: black;
-  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .blogimg {
