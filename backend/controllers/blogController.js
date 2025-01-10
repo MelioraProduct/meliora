@@ -4,10 +4,6 @@ const Blog = require("../models/blogSchema");
 exports.createBlog = async (req, res) => {
   try {
     const { blogName, text, image } = req.body;
-    console.log(req.body);
-
-
-
     const newblog = new Blog({
       blogName,
       text,
