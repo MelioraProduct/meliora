@@ -63,62 +63,48 @@ const productSchema = new mongoose.Schema(
     },
     usageTitle: {
       type: String,
-      required: [true, "How to use Product title is required"],
       trim: true,
-      minlength: [
-        1,
-        "How to use Product title must be at least 5 characters long",
-      ],
     },
     steps: {
       step1: {
         title: {
           type: String,
-          required: [true, "Step 1 title is required"],
           trim: true,
         },
         description: {
           type: String,
-          required: [true, "Step 1 description is required"],
           trim: true,
         },
         image: {
           type: String,
-          required: [true, "Step 1 image is required"],
           trim: true,
         },
       },
       step2: {
         title: {
           type: String,
-          required: [true, "Step 2 title is required"],
           trim: true,
         },
         description: {
           type: String,
-          required: [true, "Step 2 description is required"],
           trim: true,
         },
         image: {
           type: String,
-          required: [true, "Step 2 image is required"],
           trim: true,
         },
       },
       step3: {
         title: {
           type: String,
-          required: [true, "Step 3 title is required"],
           trim: true,
         },
         description: {
           type: String,
-          required: [true, "Step 3 description is required"],
           trim: true,
         },
         image: {
           type: String,
-          required: [true, "Step 3 image is required"],
           trim: true,
         },
       },

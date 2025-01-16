@@ -55,22 +55,20 @@ export default function Account() {
 
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
 
     try {
-      const response = await axios.post("/admins/upload", formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          responseType: 'json',
-        });
+      const response = await axios.post("/admins/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        responseType: "json",
+      });
 
       setUploadedUrl(response.data.url);
       setAdmin((prev) => ({
         ...prev,
         image: response.data.url,
-      })) // Store the uploaded file's URL
+      })); // Store the uploaded file's URL
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to upload the image.");
@@ -97,7 +95,7 @@ export default function Account() {
           password: admin.password,
           role: admin.role,
           isActive: admin.isActive,
-          image: uploadedUrl
+          image: uploadedUrl,
         });
 
         alert("Admin updated successfully");

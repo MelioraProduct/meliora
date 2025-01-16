@@ -125,7 +125,6 @@ export default function AddModal({ onClose, product = {} }) {
       console.error("Error adding/updating Product:", error);
       const message =
         error.response?.data?.error || "Failed to add/update product";
-      console.log(message);
     }
   };
   const handleInputChange = (e, key, subKey = null) => {
@@ -157,7 +156,6 @@ export default function AddModal({ onClose, product = {} }) {
 
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
 
     try {
       const response = await axios.post("/products/upload", formData, {
@@ -181,14 +179,9 @@ export default function AddModal({ onClose, product = {} }) {
   };
   const handleStepFileChange = async (e, stepKey, key) => {
     const file = e.target.files[0];
-    if (!file) {
-      alert("Please select a file first.");
-      return;
-    }
 
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
 
     try {
       const response = await axios.post("/products/upload", formData, {
