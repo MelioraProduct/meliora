@@ -31,12 +31,12 @@ export default function Packages() {
 
   const handleAddPackage = async (productData) => {
     try {
-      const response = await axios.post("/package", productData, {
+      await axios.post("/package", productData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Package added successfully:", response.data);
+      alert("Package added successfully:");
       setShowAddModal(false);
       fetchPackages();
     } catch (error) {
