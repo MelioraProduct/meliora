@@ -4,8 +4,9 @@ import { LampContainer } from "../ui/lamp.tsx";
 import WholeSaleCard from "./WholeSaleCard.jsx";
 import axios from "axios";
 
-function WholeSale() {
+export default function WholeSale() {
   const [pkgs, setProducts] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -14,7 +15,7 @@ function WholeSale() {
         if (response.data && response.data.length > 0) {
           setProducts(response.data);
         } else {
-          alert("No package found");
+          console.log("No package found");
         }
       } catch (error) {
         console.error("Error fetching package:", error);
@@ -37,12 +38,17 @@ function WholeSale() {
         WholeSale
       </motion.h1>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8'>
-        {pkgs.map((pkg) => (
-          <WholeSaleCard key={pkg._id} pkg={pkg} />
-        ))}
+        {pkgs.length > 0 ? (
+          pkgs.map((pkg) => <WholeSaleCard key={pkg._id} pkg={pkg} />)
+        ) : (
+          <div className='text-center text-2xl font-medium text-gray-500 col-span-full'>
+            No packages found
+          </div>
+        )}
       </div>
     </LampContainer>
   );
 }
 
-export default WholeSale;
+/* Made by Labeeb Tariq */
+/* Dynamic by: Wali M. Ahmad */
