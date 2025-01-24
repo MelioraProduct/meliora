@@ -15,7 +15,7 @@ function Products() {
         if (response.data && response.data.length > 0) {
           setProducts(response.data);
         } else {
-          alert("No products found");
+          console.log("No products found");
         }
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -39,9 +39,15 @@ function Products() {
         Our Products
       </motion.h1>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 py-8'>
-        {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))
+        ) : (
+          <div className='text-center text-2xl font-medium text-gray-500 col-span-full'>
+            No products found
+          </div>
+        )}
       </div>
     </LampContainer>
   );
@@ -49,4 +55,5 @@ function Products() {
 
 export default Products;
 
-/* Dynamic by: Wali M. Github: WaliMuhammadAhmad */
+/* Made by Labeeb Tariq */
+/* Dynamic by: Wali M. Ahmad */
