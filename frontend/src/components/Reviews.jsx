@@ -13,23 +13,27 @@ export function Reviews() {
         if (reviewsResponse.data && reviewsResponse.data.length > 0) {
           const complete = await Promise.all(
             reviewsResponse.data.map(async (review) => {
-              const customerResponse = await axios.get(
-                `/customers/${review.customerId}`
-              );
-              const customerName = customerResponse.data.name;
-              const productResponse = await axios.get(
-                `/products/${review.productId}`
-              );
-              const productName = productResponse.data.name;
-              return {
-                ...review,
-                customerName,
-                productName,
-              };
+              if (review.customerId && review.productId) {
+                const customerResponse = await axios.get(
+                  `/customers/${review.customerId}`
+                );
+                const customerName = customerResponse.data.name;
+                const productResponse = await axios.get(
+                  `/products/${review.productId}`
+                );
+                const productName = productResponse.data.name;
+                return {
+                  ...review,
+                  customerName,
+                  productName,
+                };
+              }
+              return null;
             })
           );
 
-          setReviews(complete);
+          const validReviews = complete.filter((review) => review !== null);
+          setReviews(validReviews);
         } else {
           console.log("No reviews found");
         }
@@ -62,6 +66,3 @@ export function Reviews() {
     </div>
   );
 }
-
-/* Made by Labeeb Tariq */
-/* Dynamic by: Wali M. Ahmad */
