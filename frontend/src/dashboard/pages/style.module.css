@@ -490,9 +490,11 @@ button {
   color: white;
 }
 
-.dashboard .stats {
+.stats {
   display: flex;
+  width: 100%;
   flex-wrap: wrap;
+  gap: 1em;
   justify-content: space-between;
   margin-top: 20px;
 }

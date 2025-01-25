@@ -30,7 +30,7 @@ export default function BarGraph({ name }) {
         },
       ]}
       layout='horizontal'
-      width={700}
+      width={600}
       height={500}
     />
   );

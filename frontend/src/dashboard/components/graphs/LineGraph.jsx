@@ -32,7 +32,7 @@ export default function LineGraph() {
         },
       ]}
       series={series}
-      width={800}
+      width={950}
       height={500}
     />
   );

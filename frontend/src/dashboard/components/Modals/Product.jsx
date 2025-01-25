@@ -1,153 +1,114 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
-import styles from "./style.module.css";
-import CustomAlert from "../../../components/CustomAlert";
 import axios from "axios";
-
-// Transform data to the required schema for API
-const transformDataToSchema = (formData) => {
-  const {
-    name,
-    detail,
-    subsection: subDetail,
-    description,
-    price,
-    stock: stockQuantity,
-    sizes,
-    frontImage,
-    backImage,
-    steps,
-    usageTitle,
-  } = formData;
-
-  const transformedData = {
-    name,
-    detail,
-    subDetail,
-    description,
-    price,
-    sizes: [
-      { size: "Small", quantity: sizes.small.quantity },
-      { size: "Medium", quantity: sizes.medium.quantity },
-      { size: "Large", quantity: sizes.large.quantity },
-      { size: "XL", quantity: sizes.xl.quantity },
-    ],
-    frontImage,
-    backImage,
-    stockQuantity,
-    usageTitle,
-    steps,
-  };
-
-  return transformedData;
-};
+import {
+  Button,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Snackbar,
+  Alert,
+  Tooltip,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormHelperText,
+  Select,
+  Typography,
+} from "@mui/material";
 
 export default function AddModal({ onClose, product = {} }) {
+  // eslint-disable-next-line no-unused-vars
   const [uploadedUrl, setUploadedUrl] = useState("");
   const [alert, setAlert] = useState({ type: "", text: "", open: false });
-  const stepKeys = ["step1", "step2", "step3"];
   const [currentProduct, setCurrentProduct] = useState({
     name: product.name || "",
     detail: product.detail || "",
-    subsection: product.subDetail || "",
+    subDetail: product.subDetail || "",
     description: product.description || "",
-    price: product.price || 0,
-    stock: product.stockQuantity || 0,
-    sizes: {
-      small: { selected: false, quantity: product.sizes?.[0]?.quantity || 0 },
-      medium: { selected: false, quantity: product.sizes?.[1]?.quantity || 0 },
-      large: { selected: false, quantity: product.sizes?.[2]?.quantity || 0 },
-      xl: { selected: false, quantity: product.sizes?.[3]?.quantity || 0 },
-    },
-    frontImage: product.frontImage || null,
-    backImage: product.backImage || null,
-    usageTitle: product.usageTitle || "",
-    steps: {
-      step1: {
-        title: product.steps?.step1?.title || "",
-        description: product.steps?.step1?.description || "",
-        image: product.steps?.step1?.image || null,
-      },
-      step2: {
-        title: product.steps?.step2?.title || "",
-        description: product.steps?.step2?.description || "",
-        image: product.steps?.step2?.image || null,
-      },
-      step3: {
-        title: product.steps?.step3?.title || "",
-        description: product.steps?.step3?.description || "",
-        image: product.steps?.step3?.image || null,
-      },
-    },
+    category: product.category || "Detergents",
+    isEcoFriendly: product.isEcoFriendly || false,
+    safetyInformation: product.safetyInformation || "",
+    sizes: product.sizes || [
+      { size: "Small", quantity: "", stockQuantity: 0, price: 0 },
+      { size: "Medium", quantity: "", stockQuantity: 0, price: 0 },
+      { size: "Large", quantity: "", stockQuantity: 0, price: 0 },
+      { size: "XL", quantity: "", stockQuantity: 0, price: 0 },
+    ],
+    frontImage: product.frontImage || "",
+    backImage: product.backImage || "",
+    descriptionImage: product.descriptionImage || "",
   });
 
-  // handler functions
+  // Handler functions
   const handleCloseAlert = () => {
     setAlert((prev) => ({ ...prev, open: false }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const send = transformDataToSchema(currentProduct);
+      // Validate required fields
+      if (
+        !currentProduct.name ||
+        !currentProduct.detail ||
+        !currentProduct.category
+      ) {
+        setAlert({
+          type: "error",
+          text: "Please fill all required fields",
+          open: true,
+        });
+        return;
+      }
+
+      const payload = {
+        ...currentProduct,
+        sizes: currentProduct.sizes.filter((size) => size.quantity !== ""),
+      };
 
       if (!product._id) {
-        const response = await axios.post("/products", send);
+        const response = await axios.post("/products", payload);
         if (response.status === 200) {
           setAlert({
             type: "success",
             text: "Product added successfully",
             open: true,
           });
-        } else {
-          setAlert({
-            type: "error",
-            text: "Failed to add product",
-            open: true,
-          });
+          setTimeout(onClose, 1500);
         }
       } else {
-        const response = await axios.put(`/products/${product._id}`, send);
+        const response = await axios.put(`/products/${product._id}`, payload);
         if (response.status === 200) {
           setAlert({
             type: "success",
             text: "Product updated successfully",
             open: true,
           });
-        } else {
-          setAlert({
-            type: "error",
-            text: "Failed to update product",
-            open: true,
-          });
+          setTimeout(onClose, 1500);
         }
       }
     } catch (error) {
       console.error("Error adding/updating Product:", error);
-      const message =
-        error.response?.data?.error || "Failed to add/update product";
+      setAlert({
+        type: "error",
+        text: error.response?.data?.error || "Failed to add/update product",
+        open: true,
+      });
     }
   };
-  const handleInputChange = (e, key, subKey = null) => {
-    const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
-    setCurrentProduct((prev) => ({
-      ...prev,
-      [key]: subKey ? { ...prev[key], [subKey]: value } : value,
-    }));
+
+  const handleInputChange = (e, key) => {
+    const value = e.target.value;
+    setCurrentProduct((prev) => ({ ...prev, [key]: value }));
   };
-  const handleStepChange = (e, stepKey, key) => {
-    const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
-    setCurrentProduct((prev) => ({
-      ...prev,
-      steps: {
-        ...prev.steps,
-        [stepKey]: {
-          ...prev.steps[stepKey],
-          [key]: value,
-        },
-      },
-    }));
+
+  const handleSizeChange = (index, key, value) => {
+    const updatedSizes = [...currentProduct.sizes];
+    updatedSizes[index][key] = value;
+    setCurrentProduct((prev) => ({ ...prev, sizes: updatedSizes }));
   };
-  const handleFileChange = async (e, key, subKey = null) => {
+
+  const handleFileChange = async (e, key) => {
     const file = e.target.files[0];
     if (!file) {
       alert("Please select a file first.");
@@ -166,42 +127,7 @@ export default function AddModal({ onClose, product = {} }) {
       });
 
       setUploadedUrl(response.data.url);
-      setCurrentProduct((prev) => ({
-        ...prev,
-        [key]: subKey
-          ? { ...prev[key], [subKey]: response.data.url }
-          : response.data.url,
-      }));
-    } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Failed to upload the image.");
-    }
-  };
-  const handleStepFileChange = async (e, stepKey, key) => {
-    const file = e.target.files[0];
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await axios.post("/products/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        responseType: "json",
-      });
-
-      setUploadedUrl(response.data.url);
-      setCurrentProduct((prev) => ({
-        ...prev,
-        steps: {
-          ...prev.steps,
-          [stepKey]: {
-            ...prev.steps[stepKey],
-            [key]: response.data.url,
-          },
-        },
-      }));
+      setCurrentProduct((prev) => ({ ...prev, [key]: response.data.url }));
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to upload the image.");
@@ -209,211 +135,227 @@ export default function AddModal({ onClose, product = {} }) {
   };
 
   return (
-    <div className={styles.modaloverlay}>
+    <div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4'>
       {alert.open && (
-        <CustomAlert
-          type={alert.type}
-          text={alert.text}
-          show={alert.open}
-          onClose={handleCloseAlert}
-        />
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={3000}
+          onClose={handleCloseAlert}>
+          <Alert onClose={handleCloseAlert} severity={alert.type}>
+            {alert.text}
+          </Alert>
+        </Snackbar>
       )}
       <form
         encType='multipart/form-data'
-        className={styles.modalcontent}
+        className='bg-white h-[95%] overflow-auto  p-6 rounded-lg w-full max-w-2xl'
         onSubmit={handleSubmit}>
-        <span className={styles.closeicon} onClick={onClose}>
-          &times;
-        </span>
-        <div className={styles.flexContainer}>
-          {/* Product Information Section */}
-          <div className={styles.column}>
-            <h3 style={{ fontWeight: "bold" }}>Product Information</h3>
-            <div className={styles.row}>
-              <label>Name:</label>
-              <input
-                type='text'
-                value={currentProduct.name}
-                onChange={(e) => handleInputChange(e, "name")}
+        <div className='flex justify-between items-center mb-4'>
+          <span className='text-[#216D9E] text-xl font-semibold'>
+            {product._id ? "Update Product" : "Add Product"} Information
+          </span>
+          <Button onClick={onClose}>&times;</Button>
+        </div>
+        <div className='space-y-4'>
+          <TextField
+            fullWidth
+            label='Name'
+            variant='standard'
+            value={currentProduct.name}
+            onChange={(e) => handleInputChange(e, "name")}
+            required
+          />
+          <TextField
+            fullWidth
+            label='Detail'
+            variant='standard'
+            value={currentProduct.detail}
+            onChange={(e) => handleInputChange(e, "detail")}
+            required
+          />
+          <TextField
+            fullWidth
+            label='Sub Detail'
+            variant='standard'
+            value={currentProduct.subDetail}
+            onChange={(e) => handleInputChange(e, "subDetail")}
+          />
+          <TextField
+            fullWidth
+            label='Description'
+            variant='standard'
+            value={currentProduct.description}
+            onChange={(e) => handleInputChange(e, "description")}
+          />
+          <TextField
+            fullWidth
+            label='Safety Information'
+            variant='standard'
+            value={currentProduct.safetyInformation}
+            onChange={(e) => handleInputChange(e, "safetyInformation")}
+          />
+          <FormControl variant='standard' required fullWidth>
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={currentProduct.category}
+              onChange={(e) => handleInputChange(e, "category")}
+              label='Category'>
+              <MenuItem value='Detergents'>Detergents</MenuItem>
+              <MenuItem value='Cleaners'>Cleaners</MenuItem>
+              <MenuItem value='Disinfectants'>Disinfectants</MenuItem>
+              <MenuItem value='Bleaches'>Bleaches</MenuItem>
+              <MenuItem value='Other'>Other</MenuItem>
+            </Select>
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={currentProduct.isEcoFriendly}
+                onChange={(e) =>
+                  setCurrentProduct((prev) => ({
+                    ...prev,
+                    isEcoFriendly: e.target.checked,
+                  }))
+                }
               />
-            </div>
-            <div className={styles.row}>
-              <label>Detail:</label>
-              <input
-                type='text'
-                value={currentProduct.detail}
-                onChange={(e) => handleInputChange(e, "detail")}
-              />
-            </div>
-            <div className={styles.row}>
-              <label>Sub Section:</label>
-              <input
-                type='text'
-                value={currentProduct.subsection}
-                onChange={(e) => handleInputChange(e, "subsection")}
-              />
-            </div>
-            <div className={styles.row}>
-              <label>Description:</label>
-              <input
-                type='text'
-                value={currentProduct.description}
-                onChange={(e) => handleInputChange(e, "description")}
-              />
-            </div>
-            <div className={styles.row}>
-              <label>Price:</label>
-              <input
-                type='number'
-                className={styles.counterInput}
-                value={currentProduct.price}
-                onChange={(e) => handleInputChange(e, "price")}
-              />
-              <label style={{ marginLeft: "10px" }}>Stock:</label>
-              <input
-                type='number'
-                className={styles.counterInput}
-                value={currentProduct.stock}
-                onChange={(e) => handleInputChange(e, "stock")}
-              />
-            </div>
-            <h4 style={{ fontWeight: "bold" }}>Sizes and Quantity</h4>
-            <div className={styles.row}>
-              <div className={styles.column}>
-                {["small", "medium", "large", "xl"].map((size) => (
-                  <div className={styles.inlineRow} key={size}>
-                    <div className={styles.inline}>
-                      <input
-                        type='checkbox'
-                        id={size}
-                        value={size.charAt(0).toUpperCase() + size.slice(1)}
-                        onChange={(e) =>
-                          setCurrentProduct((prev) => ({
-                            ...prev,
-                            sizes: {
-                              ...prev.sizes,
-                              [size]: {
-                                selected: e.target.checked,
-                                quantity: prev.sizes[size].quantity,
-                              },
-                            },
-                          }))
-                        }
-                      />
-                      <label htmlFor={size}>
-                        {size.charAt(0).toUpperCase() + size.slice(1)}
-                      </label>
-                    </div>
-                    <div className={styles.inline}>
-                      <label htmlFor={`${size}-quantity`}>Quantity:</label>
-                      <input
-                        type='number'
-                        id={`${size}-quantity`}
-                        disabled={!currentProduct.sizes[size].selected}
-                        value={currentProduct.sizes[size].quantity}
-                        onChange={(e) =>
-                          setCurrentProduct((prev) => ({
-                            ...prev,
-                            sizes: {
-                              ...prev.sizes,
-                              [size]: {
-                                ...prev.sizes[size],
-                                quantity: Math.max(0, Number(e.target.value)),
-                              },
-                            },
-                          }))
-                        }
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            }
+            label='Eco-Friendly'
+          />
 
-            <div className={styles.row}>
-              <label>Front Image:</label>
+          <h4 className='text-lg font-semibold'>Product Sizes</h4>
+          {currentProduct.sizes.map((size, index) => (
+            <div key={index} className='space-y-2'>
+              <Tooltip title='Click to Add Values' placement='top' arrow>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={size.quantity !== ""}
+                      onChange={(e) => {
+                        const updatedSizes = [...currentProduct.sizes];
+                        updatedSizes[index].quantity = e.target.checked
+                          ? "10 g"
+                          : "";
+                        updatedSizes[index].stockQuantity = e.target.checked
+                          ? 1
+                          : 0;
+                        updatedSizes[index].price = e.target.checked ? 1 : 0;
+                        setCurrentProduct((prev) => ({
+                          ...prev,
+                          sizes: updatedSizes,
+                        }));
+                      }}
+                    />
+                  }
+                  label={size.size}
+                />
+              </Tooltip>
+              {size.quantity !== "" && (
+                <div className='flex space-x-4'>
+                  <TextField
+                    label='Quantity'
+                    variant='standard'
+                    value={size.quantity}
+                    onChange={(e) =>
+                      handleSizeChange(index, "quantity", e.target.value)
+                    }
+                    sx={{ width: "30%" }}
+                  />
+                  <TextField
+                    label='Stock Quantity'
+                    variant='standard'
+                    type='number'
+                    value={size.stockQuantity}
+                    onChange={(e) =>
+                      handleSizeChange(index, "stockQuantity", e.target.value)
+                    }
+                    sx={{ width: "30%" }}
+                  />
+                  <TextField
+                    label='Price'
+                    variant='standard'
+                    type='number'
+                    value={size.price}
+                    onChange={(e) =>
+                      handleSizeChange(index, "price", e.target.value)
+                    }
+                    sx={{ width: "30%" }}
+                  />
+                  {size.stockQuantity === 0 && (
+                    <span className='text-red-500 font-semibold self-center'>
+                      Out of Stock
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <div className='space-y-4'>
+            <Typography variant='body1'>Front Image:</Typography>
+            <Button variant='contained' component='label'>
+              Upload Front Image
               <input
                 type='file'
-                name='frontImage'
-                id='frontImage'
+                hidden
                 onChange={(e) => handleFileChange(e, "frontImage")}
               />
-              {product.frontImage && (
-                <img
-                  className='size-1/3'
-                  src={product.frontImage}
-                  alt='Front'
-                  crossOrigin='anonymous'
-                />
-              )}
-            </div>
-            <div className={styles.row}>
-              <label>Back Image:</label>
-              <input
-                type='file'
-                name='backImage'
-                id='backImage'
-                onChange={(e) => handleFileChange(e, "backImage")}
+            </Button>
+            {currentProduct.frontImage && (
+              <img
+                src={currentProduct.frontImage}
+                alt='Front'
+                className='w-1/3'
               />
-              {product.backImage && (
-                <img
-                  className='size-1/3'
-                  src={product.backImage}
-                  alt='Front'
-                  crossOrigin='anonymous'
-                />
-              )}
-            </div>
+            )}
           </div>
 
-          {/* Usage Information Section */}
-          <div className={styles.column}>
-            <h3 style={{ fontWeight: "bold" }}>Usage Information</h3>
-            <div className={styles.row}>
-              <label>Usage Title:</label>
+          <div className='space-y-4'>
+            <Typography variant='body1'>Back Image:</Typography>
+            <Button variant='contained' component='label'>
+              Upload Back Image
               <input
-                type='text'
-                value={currentProduct.usageTitle}
-                onChange={(e) => handleInputChange(e, "usageTitle")}
+                type='file'
+                hidden
+                onChange={(e) => handleFileChange(e, "backImage")}
               />
-            </div>
-            <h4 style={{ fontWeight: "bold" }}>Steps</h4>
-            {stepKeys.map((stepKey, index) => (
-              <div key={stepKey}>
-                <h4>Step {index + 1}</h4>
-                <div className={styles.row}>
-                  <label>Step Title:</label>
-                  <input
-                    type='text'
-                    value={currentProduct.steps[stepKey].title}
-                    onChange={(e) => handleStepChange(e, stepKey, "title")}
-                  />
-                </div>
-                <div className={styles.row}>
-                  <label>Description:</label>
-                  <input
-                    type='text'
-                    value={currentProduct.steps[stepKey].description}
-                    onChange={(e) =>
-                      handleStepChange(e, stepKey, "description")
-                    }
-                  />
-                </div>
-                <div className={styles.row}>
-                  <label>Image:</label>
-                  <input
-                    name={`step${index + 1}Image`}
-                    type='file'
-                    onChange={(e) => handleStepFileChange(e, stepKey, "image")}
-                  />
-                </div>
-              </div>
-            ))}
+            </Button>
+            {currentProduct.backImage && (
+              <img
+                src={currentProduct.backImage}
+                alt='Back'
+                className='w-1/3'
+              />
+            )}
+          </div>
+
+          <div className='space-y-4'>
+            <Typography variant='body1'>Description Image:</Typography>
+            <Button variant='contained' component='label'>
+              Upload Description Image
+              <input
+                type='file'
+                hidden
+                onChange={(e) => handleFileChange(e, "descriptionImage")}
+              />
+            </Button>
+            {currentProduct.descriptionImage && (
+              <img
+                src={currentProduct.descriptionImage}
+                alt='Description'
+                className='w-1/3'
+              />
+            )}
           </div>
         </div>
-        <button className={styles.submitButton} type='submit'>
+
+        <Button
+          sx={{ marginTop: 3 }}
+          variant='contained'
+          type='submit'
+          fullWidth>
           {product._id ? "Update Product" : "Add Product"}
-        </button>
+        </Button>
       </form>
     </div>
   );
