@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import styles from "./style.module.css";
 
 export default function AddProducts() {
+  const unit = "Rs.";
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -100,14 +101,16 @@ export default function AddProducts() {
                 </div>
                 <div
                   className={`${styles.productprice} ${styles.productdescription}`}>
-                  {product.price}$
+                  {unit}
+                  {product.sizes.find((size) => size.size === "Small")?.price}
                 </div>
                 <div
                   className={`${styles.productstatus} ${
                     styles.productdescription
                   } 
                   ${
-                    product.stockQuantity === 0
+                    product.sizes.find((size) => size.size === "Small")
+                      ?.stockQuantity === 0
                       ? styles.outofstock
                       : styles.instock
                   }`}>

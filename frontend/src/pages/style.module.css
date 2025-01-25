@@ -228,10 +228,11 @@ input[type="checkbox"] {
   position: relative;
 }
 .whatsapplogo {
+  height: 3em;
+  width: 3em;
   position: fixed;
-  bottom: 30px;
-  right: 50px;
-  font-size: 30px;
+  bottom: 2em;
+  right: 3em;
   cursor: pointer;
 }
 

@@ -58,10 +58,8 @@ export default function Blog({ onClose, blog }) {
     if (uploadedUrl) {
       try {
         if (blog) {
-          console.log("Updating blog with ID:", currentBlog);
           await axios.put(`/blog/${blog._id}`, currentBlog);
         } else {
-          console.log("Adding new blog:", currentBlog);
           await axios.post("/blog/create", currentBlog);
         }
         onClose();

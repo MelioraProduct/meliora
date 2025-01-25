@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Button from "@mui/material/Button";
 import styles from "./style.module.css";
-import useAdminAuth from "../../hooks/useAdminAuth";
+// import useAdminAuth from "../../hooks/useAdminAuth";
 
 export default function Admin() {
   const [nav, setNav] = useState(false);
-  const { logout } = useAdminAuth();
+  // const { logout } = useAdminAuth();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -43,7 +44,7 @@ export default function Admin() {
           <span className={styles.hamburger} onClick={() => setNav(!nav)}>
             <GiHamburgerMenu />
           </span>
-          <Button onClick={() => logout()} variant='outlined'>
+          <Button onClick={() => navigate("/")} variant='outlined'>
             Logout
           </Button>
         </div>

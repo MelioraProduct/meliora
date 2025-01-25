@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
-
+  const unit = "Rs.";
   return (
     <Card
       color='primary'
@@ -38,7 +38,8 @@ export default function ProductCard({ product }) {
         <div>
           <Typography level='body-md'>Total price:</Typography>
           <Typography fontSize='lg' fontWeight='lg'>
-            {product.price}
+            {unit}
+            {product.sizes.find((size) => size.size === "Small")?.price}
           </Typography>
         </div>
         <Button

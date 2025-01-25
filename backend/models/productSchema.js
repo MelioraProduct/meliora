@@ -4,33 +4,43 @@ const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Product name is required"],
+      required: true,
       trim: true,
-      minlength: [1, "Product name must be at least 3 characters long"],
-      maxlength: [100, "Product name must not exceed 100 characters"],
+      minlength: 1,
+      maxlength: 100,
     },
     detail: {
       type: String,
-      required: [true, "Product Detail is required"],
+      required: true,
       trim: true,
-      minlength: [1, "Detail must be at least 10 characters long"],
+      minlength: 1,
     },
     subDetail: {
       type: String,
-      required: [true, "Product sub-detail is required"],
+      required: true,
       trim: true,
-      minlength: [1, "Sub-detail must be at least 10 characters long"],
+      minlength: 1,
     },
     description: {
       type: String,
-      required: [true, "Product description is required"],
+      required: true,
       trim: true,
-      minlength: [1, "Description must be at least 10 characters long"],
+      minlength: 1,
     },
-    price: {
-      type: Number,
-      required: [true, "Product price is required"],
-      min: [0, "Price must be greater than or equal to 0"],
+    category: {
+      type: String,
+      required: true,
+      enum: ["Detergents", "Cleaners", "Disinfectants", "Bleaches", "Other"],
+    },
+    isEcoFriendly: {
+      type: Boolean,
+      default: false,
+    },
+    safetyInformation: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
     },
     sizes: [
       {
@@ -40,74 +50,36 @@ const productSchema = new mongoose.Schema(
           enum: ["Small", "Medium", "Large", "XL", "Other"],
         },
         quantity: {
+          type: String,
+          required: true,
+        },
+        stockQuantity: {
           type: Number,
           required: true,
+          min: 0,
+          default: 1,
+        },
+        price: {
+          type: Number,
+          required: true,
+          min: 0,
+          default: 1,
         },
       },
     ],
     frontImage: {
       type: String,
-      required: [true, "Product image URL is required"],
+      required: true,
       trim: true,
     },
     backImage: {
       type: String,
-      required: [true, "Product image URL is required"],
+      required: true,
       trim: true,
     },
-    stockQuantity: {
-      type: Number,
-      required: [true, "Stock quantity is required"],
-      min: [0, "Stock quantity cannot be negative"],
-      default: 1,
-    },
-    usageTitle: {
+    descriptionImage: {
       type: String,
       trim: true,
-    },
-    steps: {
-      step1: {
-        title: {
-          type: String,
-          trim: true,
-        },
-        description: {
-          type: String,
-          trim: true,
-        },
-        image: {
-          type: String,
-          trim: true,
-        },
-      },
-      step2: {
-        title: {
-          type: String,
-          trim: true,
-        },
-        description: {
-          type: String,
-          trim: true,
-        },
-        image: {
-          type: String,
-          trim: true,
-        },
-      },
-      step3: {
-        title: {
-          type: String,
-          trim: true,
-        },
-        description: {
-          type: String,
-          trim: true,
-        },
-        image: {
-          type: String,
-          trim: true,
-        },
-      },
     },
   },
   {

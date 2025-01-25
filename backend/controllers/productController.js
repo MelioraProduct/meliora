@@ -1,47 +1,4 @@
 const Product = require("../models/productSchema");
-
-// Create a new product
-exports.createProduct = async (req, res) => {
-  try {
-    const {
-      name,
-      detail,
-      subDetail,
-      description,
-      price,
-      sizes,
-      stockQuantity,
-      usageTitle,
-      steps,
-      frontImage,
-      backImage,
-    } = req.body;
-
-    const newProduct = new Product({
-      name,
-      detail,
-      subDetail,
-      description,
-      price,
-      sizes,
-      frontImage,
-      backImage,
-      stockQuantity,
-      usageTitle,
-      steps,
-    });
-
-    const savedProduct = await newProduct.save();
-
-    res
-      .status(200)
-      .json({ message: "Product created successfully", product: savedProduct });
-  } catch (error) {
-    console.error("Error creating product:", error.message);
-    res.status(400).json({ error: error.message });
-  }
-};
-
 // Get all products
 exports.getAllProducts = async (req, res) => {
   try {
@@ -65,6 +22,63 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+// Create a new product
+exports.createProduct = async (req, res) => {
+  try {
+    const {
+      name,
+      detail,
+      subDetail,
+      description,
+      category,
+      isEcoFriendly,
+      safetyInformation,
+      sizes,
+      frontImage,
+      backImage,
+      descriptionImage,
+    } = req.body;
+
+    if (
+      !name ||
+      !detail ||
+      !subDetail ||
+      !description ||
+      !category ||
+      !safetyInformation ||
+      !sizes ||
+      !frontImage ||
+      !backImage
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const newProduct = new Product({
+      name,
+      detail,
+      subDetail,
+      description,
+      category,
+      isEcoFriendly: isEcoFriendly || false,
+      safetyInformation,
+      sizes,
+      frontImage,
+      backImage,
+      descriptionImage: descriptionImage || null,
+    });
+
+    const savedProduct = await newProduct.save();
+
+    res.status(201).json({
+      message: "Product created successfully",
+      product: savedProduct,
+    });
+  } catch (error) {
+    console.error("Error creating product:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Update product by ID
 exports.updateProduct = async (req, res) => {
   try {
@@ -73,13 +87,13 @@ exports.updateProduct = async (req, res) => {
       detail,
       subDetail,
       description,
-      price,
+      category,
+      isEcoFriendly,
+      safetyInformation,
       sizes,
-      stockQuantity,
-      usageTitle,
-      steps,
       frontImage,
       backImage,
+      descriptionImage,
     } = req.body;
 
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -89,13 +103,13 @@ exports.updateProduct = async (req, res) => {
         detail,
         subDetail,
         description,
-        price,
+        category,
+        isEcoFriendly,
+        safetyInformation,
         sizes,
         frontImage,
         backImage,
-        stockQuantity,
-        usageTitle,
-        steps,
+        descriptionImage,
       },
       { new: true, runValidators: true }
     );
@@ -109,7 +123,8 @@ exports.updateProduct = async (req, res) => {
       product: updatedProduct,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error updating product:", error.message);
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -123,51 +138,5 @@ exports.deleteProduct = async (req, res) => {
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
-  }
-};
-
-// Get product usage by ID
-exports.getProductUsage = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    res
-      .status(200)
-      .json({ usageTitle: product.usageTitle, steps: product.steps });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// Update product Usage ID
-exports.updateProductUsage = async (req, res) => {
-  try {
-    const { usageTitle, steps } = req.body;
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        usageTitle,
-        steps,
-      },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    if (!steps || typeof steps !== "object") {
-      return res.status(400).json({ message: "Invalid steps format" });
-    }
-
-    res.status(200).json({
-      message: "Product updated successfully",
-      product: updatedProduct,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
 };
