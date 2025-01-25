@@ -1,35 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const reviewSchema = new mongoose.Schema({
+const reviewSchema = new mongoose.Schema(
+  {
     stars: {
-        type: Number,
-        required: [true, 'Review stars is required'],
-        min: [1, 'Review stars must be at least 1 star'],
-        max: [5, 'Review stars must be at most 5 stars']
+      type: Number,
+      required: [true, "Review stars is required"],
+      min: [1, "Review stars must be at least 1 star"],
+      max: [5, "Review stars must be at most 5 stars"],
     },
     review: {
-        type: String,
-        trim: true,
-        required: [true, 'Review text is required'],
-        minlength: [1, 'Review must be at least 1 character'],
-        maxlength: [500, 'Review must not exceed 500 characters']
+      type: String,
+      trim: true,
+      required: [true, "Review text is required"],
+      minlength: [1, "Review must be at least 1 character"],
+      maxlength: [500, "Review must not exceed 500 characters"],
     },
     customerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      required: false,
     },
     productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true
-    }
-}, { 
-    timestamps: true
-});
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 reviewSchema.index({ customerId: 1, productId: 1 }, { unique: false });
 
-const Review = mongoose.model('Review', reviewSchema);
+const Review = mongoose.model("Review", reviewSchema);
 
 module.exports = Review;
