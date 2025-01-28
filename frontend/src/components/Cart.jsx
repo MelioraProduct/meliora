@@ -4,10 +4,11 @@ import CreateContextApi from "../hooks/CreateContextApi";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
+import { WindowSharp } from "@mui/icons-material";
 
 export default function Cart() {
   // eslint-disable-next-line no-unused-vars
-  const { showCart, setShowCart, cartData, total } =
+  const { showCart, setShowCart, cartData, setCartData, total, setTotal, sizeIndex, setSizeIndex } =
     useContext(CreateContextApi);
   const navigate = useNavigate();
 
@@ -23,32 +24,32 @@ export default function Cart() {
 
   return (
     <>
-      {showCart && (
-        <motion.div
-          className={styles.cartcontainer}
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}>
-          <div className={styles.rightsection}>
-            <div className={styles.crossicon}>
-              <RxCross1 onClick={() => setShowCart(!showCart)} />
-            </div>
-            <div className={styles.topheading}>
-              <h1>CART</h1>
-            </div>
-            <div className={styles.cartitems}>
-              {cartData.map((data, index) => (
-                <div key={index} className={styles.item}>
-                  <div className={styles.imagesection}>
-                    <img src={data.frontImage} alt='Product' />
-                  </div>
-                  <div className={styles.itemright}>
-                    <h5>{data.name}</h5>
-                    <h5>
-                      ${data.price} x {data.items}
-                    </h5>
-                  </div>
+      <motion.div
+        className={styles.cartcontainer}
+        initial={{ x: "100vw" }}
+        animate={{ x: showCart ? 0 : "100vw" }}
+        transition={{ duration: 1, ease: "easeInOut" }}>
+        <div
+          className={styles.leftsection}
+          style={{ backgroundColor: bgColor }}></div>
+        <div className={styles.rightsection}>
+          <div className={styles.crossicon}>
+            <RxCross1 onClick={() => setShowCart(!showCart)} />
+          </div>
+          <div className={styles.topheading}>
+            <h1>CART</h1>
+          </div>
+          <div className={styles.cartitems}>
+            {cartData.map((data, index) => (
+              <div key={index} className={styles.item}>
+                <div className={styles.imagesection}>
+                  <img src={data.frontImage} alt='' />
+                </div>
+                <div className={styles.itemright}>
+                  <h5>{data.name}</h5>
+                  <h5>
+                    ${sizeIndex && data.sizes[sizeIndex].price} x {data.items}
+                  </h5>
                 </div>
               ))}
               <hr />
