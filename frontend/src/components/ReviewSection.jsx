@@ -132,7 +132,7 @@ export default function ReviewSection({ product }) {
       <h1 className={styles.heading}>Customer Reviews</h1>
       <div className={styles.header}>
         <div className={styles.ratingsummary}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box id={styles.rating}>
             <Rating
               name='read-only'
               value={
@@ -185,7 +185,9 @@ export default function ReviewSection({ product }) {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-around",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
               width: "100%",
             }}>
             <Rating
@@ -241,8 +243,7 @@ export default function ReviewSection({ product }) {
                   {customers[rev.customerId]?.address.country || "Anonymous"}
                 </p>
                 <p>
-                  <strong>Posted at: </strong>{" "}
-                  {rev.createdAt || "Not specified"}
+                  <strong>Posted:</strong> {rev.createdAt || "Not specified"}
                 </p>
               </div>
             </div>
