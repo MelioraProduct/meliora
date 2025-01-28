@@ -7,7 +7,9 @@ import Cart from "../../components/Cart";
 import CreateContextApi from "../../hooks/CreateContextApi";
 import ReviewSection from "../../components/ReviewSection";
 import styles from "./style.module.css";
-import { useParams } from "react-router-dom";
+import { Container, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,6 +18,7 @@ import WhatsAppLink from "../../components/WhatsAppLink";
 
 export default function ProductDetails() {
   const unit = "Rs.";
+  const navigate = useNavigate();
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [limit, setLimit] = useState(1);
@@ -25,12 +28,12 @@ export default function ProductDetails() {
   const [isPaused, setIsPaused] = useState(false);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
 
-  // Handle size selection
   const handleSizeClick = (index) => {
     setSelectedSizeIndex(index);
     setSizeIndex(index)
   };
 
+  // handle images carousel timer
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused) {
@@ -45,14 +48,13 @@ export default function ProductDetails() {
     setCurrentImageIndex(index);
   };
 
+  // cart
   useEffect(() => {
-    // Check if 'cart' cookie exists
     const cartCookie = Cookies.get("cart");
     if (cartCookie) {
-      // Parse and set the cart data if the cookie is present
       setCartData(JSON.parse(cartCookie));
     }
-  });
+  }, []);
 
   const handleAddToCart = () => {
     const existingProductIndex = cartData.findIndex(
@@ -62,7 +64,9 @@ export default function ProductDetails() {
     if (existingProductIndex !== -1) {
       // Product already exists, update the quantity
       updatedCart = cartData.map((item, index) =>
-        index === existingProductIndex ? { ...item, items: limit } : item
+        index === existingProductIndex
+          ? { ...item, items: item.items + limit } // Update quantity
+          : item
       );
     } else {
       // Product doesn't exist, add it to the cart
@@ -71,11 +75,7 @@ export default function ProductDetails() {
         { ...product, items: limit }, // Add new product with the selected limit
       ];
     }
-
-    // Update state and cookie
-    setCartData(updatedCart);
-
-
+    setCartData(updatedCart); // Update state
     Cookies.set("cart", JSON.stringify(updatedCart), {
       expires: 1, // 1-day expiry
     });
@@ -92,7 +92,24 @@ export default function ProductDetails() {
         if (response.data) {
           setProduct(response.data);
         } else {
-          alert("No product found");
+          return (
+            <Container className='flex flex-col items-center justify-center h-screen'>
+              <Typography variant='h4' className='mb-4'>
+                Please go back and try again.
+              </Typography>
+              <Typography variant='body1' className='mb-8 text-gray-600'>
+                Selected Product doenst exist in the database.
+              </Typography>
+              <div className='flex space-x-4'>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={() => navigate("/")}>
+                  Go to Home
+                </Button>
+              </div>
+            </Container>
+          );
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -102,11 +119,12 @@ export default function ProductDetails() {
     if (productId) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
   if (!product) {
     return (
-      <div className='h-screen flex justify-center content-center'>
+      <div className='h-screen w-full flex justify-center content-center'>
         Loading...
       </div>
     );
@@ -115,7 +133,7 @@ export default function ProductDetails() {
   return (
     <>
       <Navbar />
-      <Cart />
+      <AnimatePresence>{showCart && <Cart />}</AnimatePresence>
       <div className={styles.maincontainer}>
         <span className={styles.whatsapplogo}>
           <WhatsAppLink product={product.name} />

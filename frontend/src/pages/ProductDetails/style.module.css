@@ -178,7 +178,7 @@
   border: 2px solid var(--primary-color);
 }
 
-.suggestion .text {
+.text {
   padding: 10px;
 }
 
@@ -214,3 +214,19 @@
   height: 40dvh;
   object-fit: contain;
 }
+
+@media (max-width: 425px) {
+  .maincontainer {
+    grid-template-columns: 1fr;
+  }
+  .rightsection {
+    padding: 0.6em;
+  }
+  .descriptionTextContainer {
+    grid-template-columns: 1fr;
+  }
+  .text {
+    padding: 5px;
+  }
+}
+
