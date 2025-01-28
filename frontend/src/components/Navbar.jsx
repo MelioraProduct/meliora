@@ -2,9 +2,9 @@
 import React from "react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../redux/useAuth";
 
-export function Navbar() {
+export default function Navbar() {
   const { isAuthenticated } = useAuth();
 
   const baseNavItems = [

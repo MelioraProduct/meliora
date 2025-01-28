@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
 import axios from "axios";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../redux/useAuth";
 import CustomAlert from "../../components/CustomAlert";
 
 export default function SignUp() {

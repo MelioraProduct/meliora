@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Navbar } from "./components/Navbar";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Checkout from "./pages/Checkout";
@@ -18,6 +18,8 @@ import Account from "./dashboard/pages/Account";
 import Packages from "./dashboard/pages/Packages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "./redux/reducers/products";
 
 // Axios configuration
 import axios from "axios";
@@ -130,6 +132,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch all products on app load
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   return <RouterProvider router={router} />;
 }
 

@@ -1,0 +1,55 @@
+/* Made by: Wali M. Ahmad */
+
+.cartcontainer {
+  position: fixed;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+}
+
+.crossicon {
+  float: right;
+  font-size: 25px;
+  color: white;
+  cursor: pointer;
+}
+
+.rightsection {
+  width: 30%;
+  background-color: #0b6bcb;
+  height: 100%;
+  padding: 2em;
+  overflow-y: auto;
+}
+
+.topheading {
+  text-align: center;
+  border-bottom: 2px solid white;
+  padding: 0.2em;
+  font-size: 30px;
+}
+
+.item {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  margin: 20px;
+  gap: 1em;
+}
+
+.productImage {
+  width: 5em;
+  height: 6em;
+  object-fit: cover;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8em 0.5em;
+  color: white;
+  width: 100%;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+}

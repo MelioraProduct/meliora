@@ -1,40 +1,5 @@
 /* Created By Zain */
 
-.cartcontainer {
-  position: fixed;
-  z-index: 100;
-  width: 100vw;
-  height: 100vh;
-  color: white;
-}
-
-.cartcontainer .rightsection {
-  width: 30%;
-  background-color: #0b6bcb;
-  height: 100%;
-  padding: 2em;
-}
-
-.rightsection .topheading {
-  text-align: center;
-  border-bottom: 2px solid white;
-  padding: 0.2em;
-  font-size: 30px;
-}
-
-.rightsection .cartitems .item,
-.maincheckout .cartitems .item {
-  display: flex;
-  font-weight: bold;
-  margin: 20px;
-}
-
-.maincheckout .cartitems .item {
-  display: flex;
-  font-weight: bold;
-  margin: 20px;
-}
-
 .item .imagesection img {
   width: 100px;
   height: 100px;

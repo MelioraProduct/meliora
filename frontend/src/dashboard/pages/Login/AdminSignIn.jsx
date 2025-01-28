@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
 import { useNavigate } from "react-router-dom";
-import useAdminAuth from "../../../hooks/useAdminAuth";
+import useAdminAuth from "../../../redux/useAdminAuth";
 import CustomAlert from "../../../components/CustomAlert";
 import axios from "axios";
 

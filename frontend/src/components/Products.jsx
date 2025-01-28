@@ -1,29 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { LampContainer } from "../ui/lamp.tsx";
 import ProductCard from "./ProductCard.jsx";
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectAllProducts } from "../redux/reducers/products.js";
 
 function Products() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/products");
-
-        if (response.data && response.data.length > 0) {
-          setProducts(response.data);
-        } else {
-          console.log("No products found");
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const products = useSelector(selectAllProducts);
 
   return (
     <LampContainer>

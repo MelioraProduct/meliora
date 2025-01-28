@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./review.module.css";
 import axios from "axios";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../redux/useAuth";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";

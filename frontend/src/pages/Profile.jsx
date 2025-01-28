@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Grid, Typography, Button, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../redux/useAuth";
 import Loading from "../components/Loading";
 
 export default function ProfileComponent() {

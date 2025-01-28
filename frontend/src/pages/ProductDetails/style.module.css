@@ -165,7 +165,8 @@
   transition: background-color 0.3s ease;
 }
 
-.items button:hover {
+.items button:hover,
+button:focus {
   background-color: var(--hover-color);
   border-color: var(--hover-color);
   color: white;

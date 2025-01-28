@@ -7,7 +7,7 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../redux/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export const FloatingNav = ({

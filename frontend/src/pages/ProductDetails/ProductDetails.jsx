@@ -1,38 +1,43 @@
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/joy";
-import React, { useContext, useEffect, useState } from "react";
 import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
-import { Navbar } from "../../components/Navbar";
+import { useParams } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, toggleStatus } from "../../redux/reducers/cart";
+import { selectAllProducts } from "../../redux/reducers/products";
+import "react-toastify/dist/ReactToastify.css";
+
+import Navbar from "../../components/Navbar";
 import Cart from "../../components/Cart";
-import CreateContextApi from "../../hooks/CreateContextApi";
+import WhatsAppLink from "../../components/WhatsAppLink";
 import ReviewSection from "../../components/ReviewSection";
 import styles from "./style.module.css";
-import { Container, Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import WhatsAppLink from "../../components/WhatsAppLink";
 
 export default function ProductDetails() {
   const unit = "Rs.";
-  const navigate = useNavigate();
   const { id: productId } = useParams();
-  const [product, setProduct] = useState(null);
+  const dispatch = useDispatch();
+
+  const products = useSelector(selectAllProducts);
+  const product = products.find((p) => p._id === productId);
+
   const [limit, setLimit] = useState(1);
-  const { showCart, setShowCart, cartData, setCartData } =
-    useContext(CreateContextApi);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
+  const showCart = useSelector((state) => state.cart.statusTab);
+
+  const handleShowCart = () => {
+    dispatch(toggleStatus());
+  };
 
   const handleSizeClick = (index) => {
     setSelectedSizeIndex(index);
   };
 
-  // handle images carousel timer
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused) {
@@ -47,84 +52,37 @@ export default function ProductDetails() {
     setCurrentImageIndex(index);
   };
 
-  // cart
-  useEffect(() => {
-    const cartCookie = Cookies.get("cart");
-    if (cartCookie) {
-      setCartData(JSON.parse(cartCookie));
-    }
-  }, []);
-
   const handleAddToCart = () => {
-    const existingProductIndex = cartData.findIndex(
-      (item) => item.id === product.id
-    );
-    let updatedCart;
-    if (existingProductIndex !== -1) {
-      // Product already exists, update the quantity
-      updatedCart = cartData.map((item, index) =>
-        index === existingProductIndex
-          ? { ...item, items: item.items + limit } // Update quantity
-          : item
-      );
-    } else {
-      // Product doesn't exist, add it to the cart
-      updatedCart = [
-        ...cartData,
-        { ...product, items: limit }, // Add new product with the selected limit
-      ];
+    if (selectedSizeIndex === null) {
+      toast.error("Please select a size before adding to cart.", {
+        autoClose: 2000,
+        position: "top-center",
+      });
+      return;
     }
 
-    setCartData(updatedCart); // Update state
-    Cookies.set("cart", JSON.stringify(updatedCart), {
-      expires: 1, // 1-day expiry
-    });
-    toast.success(`Cart Item Updated to ${limit}`, {
+    const selectedSize = product.sizes[selectedSizeIndex];
+
+    dispatch(
+      addToCart({
+        productId: product._id,
+        productName: product.name,
+        productImage: product.frontImage,
+        productSize: selectedSize.size,
+        productPrice: selectedSize.price,
+        quantity: limit,
+      })
+    );
+
+    toast.success(`Cart updated: ${limit} item(s) added`, {
       autoClose: 1000,
       position: "top-center",
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/products/${productId}`);
-        if (response.data) {
-          setProduct(response.data);
-        } else {
-          return (
-            <Container className='flex flex-col items-center justify-center h-screen'>
-              <Typography variant='h4' className='mb-4'>
-                Please go back and try again.
-              </Typography>
-              <Typography variant='body1' className='mb-8 text-gray-600'>
-                Selected Product doenst exist in the database.
-              </Typography>
-              <div className='flex space-x-4'>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={() => navigate("/")}>
-                  Go to Home
-                </Button>
-              </div>
-            </Container>
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
-    };
-
-    if (productId) {
-      fetchData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productId]);
-
   if (!product) {
     return (
-      <div className='h-screen w-full flex justify-center content-center'>
+      <div className='h-screen w-full flex justify-center items-center'>
         Loading...
       </div>
     );
@@ -185,9 +143,7 @@ export default function ProductDetails() {
                 className={`${styles.sizeButton} ${
                   selectedSizeIndex === index ? styles.selected : ""
                 }`}
-                onClick={() => handleSizeClick(index)}
-                onMouseEnter={() => handleSizeClick(index)}
-                onMouseLeave={() => setSelectedSizeIndex(null)}>
+                onClick={() => handleSizeClick(index)}>
                 {size.size}
               </button>
             ))}
@@ -262,19 +218,9 @@ export default function ProductDetails() {
               {limit}
               <button onClick={() => setLimit(limit + 1)}>+</button>
             </div>
-            <Button
-              onClick={() => {
-                handleAddToCart();
-              }}>
-              Add to Cart
-            </Button>
+            <Button onClick={handleAddToCart}>Add to Cart</Button>
           </div>
-          <Button
-            onClick={() => {
-              setShowCart(!showCart);
-            }}>
-            See Cart
-          </Button>
+          <Button onClick={() => handleShowCart()}>See Cart</Button>
         </div>
       </div>
       <div className={styles.descriptionSection}>

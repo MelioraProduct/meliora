@@ -1,84 +1,93 @@
-import React, { useContext, useEffect } from "react";
+import { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
-import CreateContextApi from "../hooks/CreateContextApi";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import styles from "./style.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleStatus } from "../redux/reducers/cart";
+import styles from "./cart.module.css";
 
 export default function Cart() {
-  // eslint-disable-next-line no-unused-vars
-  const { showCart, setShowCart, cartData, total } =
-    useContext(CreateContextApi);
+  const unit = "Rs.";
   const navigate = useNavigate();
+  const carts = useSelector((store) => store.cart.items);
+  const dispatch = useDispatch();
+  const [isCartOpen, setIsCartOpen] = useState(true);
 
-  useEffect(() => {
-    if (showCart) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-  }, [showCart]);
+  const handleShowCart = () => {
+    setIsCartOpen(false);
+    dispatch(toggleStatus());
+  };
 
-  console.log("cartData", cartData);
+  const calculateTotal = () => {
+    return carts.reduce(
+      (acc, item) => acc + item.productPrice * item.quantity,
+      0
+    );
+  };
+
+  const total = calculateTotal();
 
   return (
-    <>
-      {showCart && (
-        <motion.div
-          className={styles.cartcontainer}
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}>
-          <div className={styles.rightsection}>
-            <div className={styles.crossicon}>
-              <RxCross1 onClick={() => setShowCart(!showCart)} />
+    <motion.div
+      className={styles.cartcontainer}
+      initial={{ x: "100%" }}
+      animate={{ x: isCartOpen ? 0 : "100%" }}
+      exit={{ x: "100%" }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}>
+      <div className={styles.rightsection}>
+        <div className={styles.crossicon}>
+          <RxCross1 onClick={handleShowCart} />
+        </div>
+        <div className={styles.topheading}>
+          <h1>CART</h1>
+        </div>
+        <div className={styles.cartitems}>
+          {carts.map((data, index) => (
+            <div key={index} className={styles.item}>
+              <img
+                className={styles.productImage}
+                src={data.productImage}
+                alt='Product'
+              />
+              <div className={styles.itemright}>
+                <h5>{data.productName}</h5>
+                <p>
+                  <strong>Size:</strong>
+                  <span>{data.productSize}</span>
+                </p>
+                <p>
+                  <strong>Price:</strong>
+                  <span>
+                    {unit}
+                    {data.productPrice}
+                  </span>
+                </p>
+                <p>
+                  <strong>Quantity:</strong>
+                  <span>{data.quantity}</span>
+                </p>
+              </div>
             </div>
-            <div className={styles.topheading}>
-              <h1>CART</h1>
-            </div>
-            <div className={styles.cartitems}>
-              {cartData.map((data, index) => (
-                <div key={index} className={styles.item}>
-                  <div className={styles.imagesection}>
-                    <img src={data.frontImage} alt='Product' />
-                  </div>
-                  <div className={styles.itemright}>
-                    <h5>{data.name}</h5>
-                    <h5>
-                      ${data.price} x {data.items}
-                    </h5>
-                  </div>
-                </div>
-              ))}
-              <hr />
-            </div>
-            <div className={styles.label}>
-              <h3>SubTotal:</h3>
-              <h3>{total}</h3>
-            </div>
-            <div className={styles.label}>
-              <h3>Shipping:</h3>
-              <h3>Free</h3>
-            </div>
-            <div className={styles.label}>
-              <h3>Total:</h3>
-              <h3>{total}</h3>
-            </div>
-            <div className={styles.checkout}>
-              <button
-                className='text-white text-lg border-white mt-2'
-                onClick={() => {
-                  navigate("/checkout");
-                  setShowCart(!showCart);
-                  document.body.classList.remove("no-scroll");
-                }}>
-                Proceed to Checkout
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </>
+          ))}
+        </div>
+        <div className={styles.label}>
+          <h3>Total:</h3>
+          <h3>
+            {unit}
+            {total}
+          </h3>
+        </div>
+        <div className={styles.checkout}>
+          <button
+            className='text-white text-lg border-white mt-2'
+            onClick={() => {
+              navigate("/checkout");
+              document.body.classList.remove("no-scroll");
+            }}>
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </motion.div>
   );
 }

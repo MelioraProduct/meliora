@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../redux/useAuth";
 import CustomAlert from "../../components/CustomAlert";
 import axios from "axios";
 
