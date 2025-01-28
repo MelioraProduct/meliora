@@ -3,24 +3,33 @@
 
 .cartcontainer {
   position: fixed;
+  display: flex;
   z-index: 100;
   width: 100vw;
-  height: 100vh;
-  color: white;
+  height: 120vh;
 }
 
 .cartcontainer .rightsection {
-  width: 30%;
+  width: 40%;
   background-color: #0b6bcb;
   height: 100%;
-  padding: 2em;
+  padding: 50px;
 }
 
 .rightsection .topheading {
   text-align: center;
   border-bottom: 2px solid white;
-  padding: 0.2em;
+  padding: 10px;
+}
+
+.cartcontainer .rightsection h1,
+.maincheckout h1 {
   font-size: 30px;
+  color: white;
+}
+
+.maincheckout h1 {
+  color: black;
 }
 
 .rightsection .cartitems .item,
@@ -28,12 +37,14 @@
   display: flex;
   font-weight: bold;
   margin: 20px;
+  color: white;
 }
 
 .maincheckout .cartitems .item {
   display: flex;
   font-weight: bold;
   margin: 20px;
+  color: black;
 }
 
 .item .imagesection img {
@@ -46,18 +57,47 @@
   display: block;
   margin: auto;
 }
+.itemright h5 {
+  font-weight: lighter;
+}
 
 .cartitems hr {
   background-color: white;
 }
 
-.label {
+.label1,
+.label2,
+.label3 {
   display: flex;
   justify-content: space-between;
   padding: 10px 10px;
   color: white;
   width: 100%;
+}
+
+.label1,
+.label2 {
   border-bottom: 2px solid white;
+}
+
+.checkout {
+  display: flex;
+  font-size: 20px;
+}
+
+.checkout span {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 5px;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+}
+
+.checkout h3 {
+  text-decoration: underline;
+  cursor: pointer;
+  color: white;
 }
 
 .crossicon {
