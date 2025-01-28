@@ -1,7 +1,8 @@
 /* Created By Zain */
 
+
 .cartcontainer {
-  position: absolute;
+  position: fixed;
   display: flex;
   z-index: 100;
   width: 100vw;
@@ -353,6 +354,10 @@
 .reviewcontent h5 {
   color: #0056b3;
   font-size: 1.1em;
+}
+.cartcontainer .leftsection{
+  width: 60%;
+  
 }
 
 @media screen and (max-width: 1110px) {

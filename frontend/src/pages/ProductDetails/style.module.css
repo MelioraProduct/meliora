@@ -4,15 +4,16 @@
 }
 
 .maincontainer {
-  width: 100%;
+  width: 100vw;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-items: stretch;
   align-items: stretch;
   border: 1px solid var(--hover-color);
+  overflow-x: hidden;
 }
 
-.maincontainer > * {
+.maincontainer>* {
   border: 1px solid var(--hover-color);
   box-sizing: border-box;
 }

@@ -4,10 +4,11 @@ import CreateContextApi from "../hooks/CreateContextApi";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
+import { WindowSharp } from "@mui/icons-material";
 
 export default function Cart() {
   // eslint-disable-next-line no-unused-vars
-  const { showCart, setShowCart, cartData, setCartData, total, setTotal } =
+  const { showCart, setShowCart, cartData, setCartData, total, setTotal, sizeIndex, setSizeIndex } =
     useContext(CreateContextApi);
   const [bgColor, setBgColor] = useState("transparent");
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function Cart() {
                 <div className={styles.itemright}>
                   <h5>{data.name}</h5>
                   <h5>
-                    ${data.price} x {data.items}
+                    ${sizeIndex && data.sizes[sizeIndex].price} x {data.items}
                   </h5>
                 </div>
               </div>

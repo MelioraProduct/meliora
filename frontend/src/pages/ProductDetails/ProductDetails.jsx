@@ -19,7 +19,7 @@ export default function ProductDetails() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [limit, setLimit] = useState(1);
-  const { showCart, setShowCart, cartData, setCartData } =
+  const { showCart, setShowCart, cartData, setCartData, sizeIndex, setSizeIndex } =
     useContext(CreateContextApi);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -28,6 +28,7 @@ export default function ProductDetails() {
   // Handle size selection
   const handleSizeClick = (index) => {
     setSelectedSizeIndex(index);
+    setSizeIndex(index)
   };
 
   useEffect(() => {
@@ -73,6 +74,7 @@ export default function ProductDetails() {
 
     // Update state and cookie
     setCartData(updatedCart);
+
 
     Cookies.set("cart", JSON.stringify(updatedCart), {
       expires: 1, // 1-day expiry
@@ -135,9 +137,8 @@ export default function ProductDetails() {
             {[0, 1].map((index) => (
               <span
                 key={index}
-                className={`${styles.dot} ${
-                  currentImageIndex === index ? styles.activeDot : ""
-                }`}
+                className={`${styles.dot} ${currentImageIndex === index ? styles.activeDot : ""
+                  }`}
                 onClick={() => handleDotClick(index)}></span>
             ))}
           </div>
@@ -162,9 +163,8 @@ export default function ProductDetails() {
             {product.sizes.map((size, index) => (
               <button
                 key={index}
-                className={`${styles.sizeButton} ${
-                  selectedSizeIndex === index ? styles.selected : ""
-                }`}
+                className={`${styles.sizeButton} ${selectedSizeIndex === index ? styles.selected : ""
+                  }`}
                 onClick={() => handleSizeClick(index)}
                 onMouseEnter={() => handleSizeClick(index)}
                 onMouseLeave={() => setSelectedSizeIndex(null)}>
@@ -177,9 +177,8 @@ export default function ProductDetails() {
             {product.sizes.map((size, index) => (
               <button
                 key={index}
-                className={`${styles.quantityButton} ${
-                  selectedSizeIndex === index ? styles.selected : ""
-                }`}>
+                className={`${styles.quantityButton} ${selectedSizeIndex === index ? styles.selected : ""
+                  }`}>
                 {size.quantity}
               </button>
             ))}
@@ -189,9 +188,8 @@ export default function ProductDetails() {
             {product.sizes.map((size, index) => (
               <button
                 key={index}
-                className={`${styles.quantityButton} ${
-                  selectedSizeIndex === index ? styles.selected : ""
-                }`}>
+                className={`${styles.quantityButton} ${selectedSizeIndex === index ? styles.selected : ""
+                  }`}>
                 {size.stockQuantity}
               </button>
             ))}
@@ -201,9 +199,8 @@ export default function ProductDetails() {
             {product.sizes.map((size, index) => (
               <button
                 key={index}
-                className={`${styles.quantityButton} ${
-                  selectedSizeIndex === index ? styles.selected : ""
-                }`}>
+                className={`${styles.quantityButton} ${selectedSizeIndex === index ? styles.selected : ""
+                  }`}>
                 {unit}
                 {size.price}
               </button>
