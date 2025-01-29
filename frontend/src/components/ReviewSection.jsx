@@ -25,7 +25,7 @@ export default function ReviewSection({ product }) {
   const [reviews, setReviews] = useState([]);
   const [customers, setCustomers] = useState({});
   const [customer, setCustomer] = useState({});
-  const [stars, setStars] = useState(1);
+  const [stars, setStars] = useState(5);
   const [reviv, setReview] = useState("");
   const [hover, setHover] = useState(-1);
 

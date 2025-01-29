@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
@@ -16,14 +17,17 @@ import AddProducts from "./dashboard/pages/Product";
 import Blog from "./dashboard/pages/Blog";
 import Account from "./dashboard/pages/Account";
 import Packages from "./dashboard/pages/Packages";
+
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
+
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "./redux/reducers/products";
-
-// Axios configuration
+import { fetchReviews } from "./redux/reducers/reviews";
+import { fetchBlogs } from "./redux/reducers/blogs";
 import axios from "axios";
 
+// Axios configuration
 axios.defaults.baseURL = process.env.REACT_APP_API_ORIGIN;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -135,8 +139,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch all products on app load
     dispatch(fetchProducts());
+    dispatch(fetchReviews());
+    dispatch(fetchBlogs());
   }, [dispatch]);
 
   return <RouterProvider router={router} />;

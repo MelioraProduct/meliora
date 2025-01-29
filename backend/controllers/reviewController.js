@@ -10,7 +10,7 @@ exports.createReview = async (req, res) => {
     const product = await Product.findById(productId);
     const customer = await Customer.findById(customerId);
     if (!product) {
-      return res.status(404).json({ message: "Product or Customer not found" });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     const newReview = new Review({

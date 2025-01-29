@@ -1,49 +1,9 @@
-import { useEffect, useState } from "react";
 import { InfiniteMovingCards } from "./../ui/infinite-moving-cards.tsx";
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectAllReviews } from "../redux/reducers/reviews";
 
 export function Reviews() {
-  const [reviews, setReviews] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const reviewsResponse = await axios.get("/review");
-
-        if (reviewsResponse.data && reviewsResponse.data.length > 0) {
-          const complete = await Promise.all(
-            reviewsResponse.data.map(async (review) => {
-              if (review.customerId && review.productId) {
-                const customerResponse = await axios.get(
-                  `/customers/${review.customerId}`
-                );
-                const customerName = customerResponse.data.name;
-                const productResponse = await axios.get(
-                  `/products/${review.productId}`
-                );
-                const productName = productResponse.data.name;
-                return {
-                  ...review,
-                  customerName,
-                  productName,
-                };
-              }
-              return null;
-            })
-          );
-
-          const validReviews = complete.filter((review) => review !== null);
-          setReviews(validReviews);
-        } else {
-          console.log("No reviews found");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const reviews = useSelector(selectAllReviews);
 
   return (
     <div className='h-[40rem] rounded-md flex flex-col gap-10 antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden'>
@@ -53,7 +13,6 @@ export function Reviews() {
           items={reviews.map((review) => ({
             name: review.customerName,
             quote: review.review,
-            title: review.productName,
           }))}
           direction='right'
           speed='slow'

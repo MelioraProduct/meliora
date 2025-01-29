@@ -4,10 +4,10 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import { useNavigate } from "react-router-dom";
+import { getPriceForSize } from "../utils/getPriceForSize";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
-  const unit = "Rs.";
   return (
     <Card
       color='primary'
@@ -38,8 +38,7 @@ export default function ProductCard({ product }) {
         <div>
           <Typography level='body-md'>Total price:</Typography>
           <Typography fontSize='lg' fontWeight='lg'>
-            {unit}
-            {product.sizes.find((size) => size.size === "Small")?.price}
+            {getPriceForSize(product.sizes)}
           </Typography>
         </div>
         <Button

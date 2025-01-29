@@ -63,9 +63,9 @@ export const InfiniteMovingCards = ({
   const getSpeed = () => {
     if (containerRef.current) {
       if (speed === "slow") {
-        containerRef.current.style.setProperty("--animation-duration", "10s");
+        containerRef.current.style.setProperty("--animation-duration", "100s");
       } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
+        containerRef.current.style.setProperty("--animation-duration", "50s");
       } else {
         containerRef.current.style.setProperty("--animation-duration", "30s");
       }

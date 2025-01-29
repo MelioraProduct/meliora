@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, toggleStatus } from "../../redux/reducers/cart";
 import { selectAllProducts } from "../../redux/reducers/products";
+import { getPriceForSize } from "../../utils/getPriceForSize";
 import "react-toastify/dist/ReactToastify.css";
 
 import Navbar from "../../components/Navbar";
@@ -29,6 +30,10 @@ export default function ProductDetails() {
   const [isPaused, setIsPaused] = useState(false);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
   const showCart = useSelector((state) => state.cart.statusTab);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleShowCart = () => {
     dispatch(toggleStatus());
@@ -127,10 +132,7 @@ export default function ProductDetails() {
           <h1 style={{ fontWeight: "bold", textTransform: "capitalize" }}>
             {product.name}
           </h1>
-          <h1>
-            {unit}
-            {product.sizes.find((size) => size.size === "Small")?.price}
-          </h1>
+          <h1>{getPriceForSize(product.sizes)}</h1>
           <h5 className={styles.price}>Total Price - Calculated at checkout</h5>
           <div className={styles.para}>
             <p>{product.detail}</p>
