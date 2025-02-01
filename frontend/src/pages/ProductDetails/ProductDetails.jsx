@@ -18,7 +18,7 @@ import ReviewSection from "../../components/ReviewSection";
 import styles from "./style.module.css";
 
 export default function ProductDetails() {
-  const unit = "Rs.";
+  const currency = "Rs.";
   const { id: productId } = useParams();
   const dispatch = useDispatch();
 
@@ -182,7 +182,7 @@ export default function ProductDetails() {
                 className={`${styles.quantityButton} ${
                   selectedSizeIndex === index ? styles.selected : ""
                 }`}>
-                {unit}
+                {currency}
                 {size.price}
               </button>
             ))}

@@ -2,20 +2,6 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    user: {
-      auth0Id: {
-        type: String,
-        trim: true,
-      },
-      name: {
-        type: String,
-        trim: true,
-      },
-      email: {
-        type: String,
-        trim: true,
-      },
-    },
     billingDetails: {
       name: {
         type: String,
@@ -31,30 +17,12 @@ const orderSchema = new mongoose.Schema(
         required: true,
       },
       address: {
-        house: {
-          type: String,
-          default: "N/A",
-        },
-        street: {
-          type: String,
-          required: [true, "Street address is required"],
-        },
-        city: {
-          type: String,
-          required: [true, "City is required"],
-        },
-        state: {
-          type: String,
-          default: "N/A",
-        },
-        postalCode: {
-          type: String,
-          default: "N/A",
-        },
-        country: {
-          type: String,
-          default: "Pakistan",
-        },
+        house: { type: String },
+        street: { type: String },
+        city: { type: String },
+        state: { type: String },
+        postalCode: { type: String },
+        country: { type: String, default: "N/A" },
       },
     },
     cart: {
@@ -75,7 +43,7 @@ const orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["Cash on Delivery", "Other"],
+      enum: ["Cash on Delivery"],
       required: true,
     },
     totalAmount: {

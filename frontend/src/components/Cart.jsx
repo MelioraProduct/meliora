@@ -7,7 +7,7 @@ import { toggleStatus } from "../redux/reducers/cart";
 import styles from "./cart.module.css";
 
 export default function Cart() {
-  const unit = "Rs.";
+  const currency = "Rs.";
   const navigate = useNavigate();
   const carts = useSelector((store) => store.cart.items);
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ export default function Cart() {
                 <p>
                   <strong>Price:</strong>
                   <span>
-                    {unit}
+                    {currency}
                     {data.productPrice}
                   </span>
                 </p>
@@ -73,7 +73,7 @@ export default function Cart() {
         <div className={styles.label}>
           <h3>Total:</h3>
           <h3>
-            {unit}
+            {currency}
             {total}
           </h3>
         </div>

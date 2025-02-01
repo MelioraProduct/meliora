@@ -3,6 +3,7 @@ import cartReducer from "./reducers/cart";
 import productsReducer from "./reducers/products";
 import reviewsReducer from "./reducers/reviews";
 import blogsReducer from "./reducers/blogs";
+import orderReducer from "./reducers/order";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     products: productsReducer,
     reviews: reviewsReducer,
     blogs: blogsReducer,
+    order: orderReducer,
   },
 });

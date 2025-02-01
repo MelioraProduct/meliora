@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 const initialState = {
   items: Cookies.get("cart") ? JSON.parse(Cookies.get("cart")) : [],
+  currency: "Rs.",
   status: false,
 };
 
@@ -63,8 +64,13 @@ const cartSlice = createSlice({
         state.statusTab = false;
       }
     },
+    clearCart(state) {
+      state.items = [];
+      Cookies.remove("cart");
+    },
   },
 });
 
-export const { addToCart, changeQuantity, toggleStatus } = cartSlice.actions;
+export const { addToCart, changeQuantity, clearCart, toggleStatus } =
+  cartSlice.actions;
 export default cartSlice.reducer;

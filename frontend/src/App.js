@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
-import Checkout from "./pages/Checkout";
+import Checkout from "./pages/Checkout/Checkout";
 import ProfileComponent from "./pages/Profile";
 import SignIn from "./pages/LogIn/SignIn";
 import SignUp from "./pages/LogIn/SignUp";
-import OrderDetails from "./pages/OrderDetails";
+import OrderDetails from "./pages/OrderDetails/OrderDetails";
 import AdminSignIn from "./dashboard/pages/Login/AdminSignIn";
 import Admin from "./dashboard/pages/Admin";
 import Dashboard from "./dashboard/pages/Dashboard";
@@ -50,21 +49,12 @@ const router = createBrowserRouter([
     element: <ProductDetails />,
   },
   {
-    path: "/order-details/:id",
-    element: (
-      <ProtectedRoute>
-        <Navbar />
-        <OrderDetails />
-      </ProtectedRoute>
-    ),
+    path: "/checkout",
+    element: <Checkout />,
   },
   {
-    path: "/checkout",
-    element: (
-      <ProtectedRoute>
-        <Checkout />
-      </ProtectedRoute>
-    ),
+    path: "/order-details",
+    element: <OrderDetails />,
   },
   {
     path: "/profile",

@@ -5,13 +5,11 @@ const Customer = require("../models/customerSchema");
 // Place a new order
 exports.neworder = async (req, res) => {
   try {
-    const { user, billingDetails, cart, paymentMethod, totalAmount, status } =
+    const { billingDetails, cart, paymentMethod, totalAmount, status } =
       req.body;
 
-    if (!user || !cart || cart.items.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Invalid data. User or cart is missing." });
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty or invalid." });
     }
 
     const productChecks = await Promise.all(
@@ -21,37 +19,34 @@ exports.neworder = async (req, res) => {
     if (productChecks.some((product) => !product)) {
       return res
         .status(404)
-        .json({ message: "One or more products not found" });
+        .json({ message: "One or more products not found." });
     }
 
     const newOrder = new Order({
-      user: {
-        auth0Id: user.auth0Id,
-        name: user.name,
-        email: user.email,
-      },
       billingDetails: {
         name: billingDetails.name,
         email: billingDetails.email,
         phone: billingDetails.phone,
         address: {
-          house: billingDetails.address.house,
-          street: billingDetails.address.street,
-          city: billingDetails.address.city,
-          state: billingDetails.address.state,
-          postalCode: billingDetails.address.postalCode,
-          country: billingDetails.address.country,
+          house: billingDetails.address.house || "N/A",
+          street: billingDetails.address.street || "N/A",
+          city: billingDetails.address.city || "N/A",
+          state: billingDetails.address.state || "N/A",
+          postalCode: billingDetails.address.postalCode || "N/A",
+          country: billingDetails.address.country || "N/A",
         },
       },
       cart: {
         items: cart.items.map((item) => ({
           productId: item.productId,
+          productName: item.productName,
+          productPrice: item.productPrice,
           quantity: item.quantity,
         })),
       },
       paymentMethod,
       totalAmount,
-      status: status || "pending",
+      status: "pending",
     });
 
     const savedOrder = await newOrder.save();
@@ -59,7 +54,14 @@ exports.neworder = async (req, res) => {
       .status(201)
       .json({ message: "Order placed successfully", order: savedOrder });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: "Validation failed. Check your input data." });
+    }
+    res
+      .status(500)
+      .json({ message: "Internal server error. Please try again later." });
   }
 };
 
@@ -111,10 +113,12 @@ exports.getOrderByCustomerEmail = async (req, res) => {
     const { customerEmail } = req.params;
 
     // Find orders based on billingDetails.email
-    const orders = await Order.find({ 'billingDetails.email': customerEmail });
+    const orders = await Order.find({ "billingDetails.email": customerEmail });
 
     if (!orders.length) {
-      return res.status(404).json({ message: "No orders found for this customer" });
+      return res
+        .status(404)
+        .json({ message: "No orders found for this customer" });
     }
 
     res.status(200).json(orders);
@@ -162,7 +166,10 @@ exports.deleteOrder = async (req, res) => {
 exports.getRevenue = async (req, res) => {
   try {
     const completedOrders = await Order.find({ status: "completed" });
-    const totalRevenue = completedOrders.reduce((sum, order) => sum + order.totalAmount, 0);
+    const totalRevenue = completedOrders.reduce(
+      (sum, order) => sum + order.totalAmount,
+      0
+    );
 
     res.status(200).json({
       message: "Total revenue calculated successfully",
@@ -184,7 +191,8 @@ exports.topSellingProduct = async (req, res) => {
     completedOrders.forEach((order) => {
       order.cart.items.forEach((item) => {
         const productId = item.productId.toString();
-        productCount[productId] = (productCount[productId] || 0) + item.quantity;
+        productCount[productId] =
+          (productCount[productId] || 0) + item.quantity;
         totalItemCount += item.quantity; // Add the item quantity to the total count
       });
     });
