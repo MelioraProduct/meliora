@@ -1,6 +1,6 @@
 /* Made by: Wali M. Ahmad */
 
-.cartcontainer {
+.cartContainer {
   position: fixed;
   z-index: 100;
   width: 100vw;
@@ -15,11 +15,10 @@
   cursor: pointer;
 }
 
-.rightsection {
-  width: 30%;
+.cartSection {
   background-color: #0b6bcb;
   height: 100%;
-  padding: 2em;
+  padding: 1.2em;
   overflow-y: auto;
 }
 
@@ -52,4 +51,10 @@
   width: 100%;
   border-top: 2px solid white;
   border-bottom: 2px solid white;
+}
+
+@media screen and (min-width: 768px) {
+  .cartSection {
+    width: 40%;
+  }
 }

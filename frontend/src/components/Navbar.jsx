@@ -1,13 +1,19 @@
-"use client";
 import React from "react";
 import { FloatingNav } from "../ui/floating-navbar";
-import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
-import useAuth from "../redux/useAuth";
+import {
+  IconHome,
+  IconMessage,
+  IconUser,
+  IconShoppingCart,
+  IconBuildingStore,
+  IconLibrary,
+} from "@tabler/icons-react";
+// import useAuth from "../redux/useAuth";
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
 
-  const baseNavItems = [
+  const navItems = [
     {
       name: "Home",
       link: "#home",
@@ -15,28 +21,23 @@ export default function Navbar() {
     },
     {
       name: "Products",
-      link: "#products",
-      icon: <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />,
+      link: "/#products",
+      icon: (
+        <IconShoppingCart className='h-4 w-4 text-neutral-500 dark:text-white' />
+      ),
     },
     {
       name: "WholeSale",
       link: "#wholeSale",
       icon: (
-        <IconMessage className='h-4 w-4 text-neutral-500 dark:text-white' />
-      ),
-    },
-    {
-      name: "Why us",
-      link: "#whyus",
-      icon: (
-        <IconMessage className='h-4 w-4 text-neutral-500 dark:text-white' />
+        <IconBuildingStore className='h-4 w-4 text-neutral-500 dark:text-white' />
       ),
     },
     {
       name: "Blogs",
       link: "#blogs",
       icon: (
-        <IconMessage className='h-4 w-4 text-neutral-500 dark:text-white' />
+        <IconLibrary className='h-4 w-4 text-neutral-500 dark:text-white' />
       ),
     },
     {
@@ -49,24 +50,9 @@ export default function Navbar() {
     {
       name: "Panel",
       link: "/admin",
-      icon: (
-        <IconMessage className='h-4 w-4 text-neutral-500 dark:text-white' />
-      ),
+      icon: <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />,
     },
   ];
-
-  const navItems = isAuthenticated
-    ? [
-        ...baseNavItems,
-        {
-          name: "Profile",
-          link: "/profile",
-          icon: (
-            <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />
-          ),
-        },
-      ]
-    : baseNavItems;
 
   return (
     <div className='relative w-full'>

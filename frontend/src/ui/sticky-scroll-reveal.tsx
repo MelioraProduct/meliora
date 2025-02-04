@@ -53,9 +53,9 @@ export const StickyScroll = ({
     linearGradients[0]
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCard]);
 
   return (
@@ -63,18 +63,17 @@ export const StickyScroll = ({
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10"
+      className='h-screen sm:h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-5 sm:p-8 md:p-10'
       ref={ref}
       style={{
         scrollbarWidth: "none", // Firefox
         msOverflowStyle: "none", // Internet Explorer and Edge
-      }}
-    >
-      <div className="div relative flex items-start px-4">
-        <div className="max-w-2xl">
-          <h1 className="text-6xl font-bold text-slate-100">Service Blogs</h1>
+      }}>
+      <div className='div relative flex items-start px-4'>
+        <div className='max-w-2xl'>
+          <h1 className='text-6xl font-bold text-slate-100'>Service Blogs</h1>
           {content.map((item, index) => (
-            <div key={item.title + index} className="my-20">
+            <div key={item.title + index} className='my-20'>
               <motion.h2
                 initial={{
                   opacity: 0,
@@ -82,8 +81,7 @@ export const StickyScroll = ({
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-2xl font-bold text-slate-100"
-              >
+                className='text-2xl font-bold text-slate-100'>
                 {item.title}
               </motion.h2>
               <motion.p
@@ -93,17 +91,14 @@ export const StickyScroll = ({
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-lg text-slate-300 max-w-sm mt-10"
-              >
+                className='text-lg text-slate-300 max-w-sm mt-10'>
                 {item.description}
               </motion.p>
               {/* Mobile View: Show image below the description */}
-              <div className="block lg:hidden mt-6">
-                {item.content}
-              </div>
+              <div className='block lg:hidden mt-6'>{item.content}</div>
             </div>
           ))}
-          <div className="h-40" />
+          <div className='md:h-40' />
         </div>
       </div>
       <div
@@ -111,8 +106,7 @@ export const StickyScroll = ({
         className={cn(
           "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
           contentClassName
-        )}
-      >
+        )}>
         {content[activeCard].content ?? null}
       </div>
     </motion.div>

@@ -29,12 +29,12 @@ export default function Cart() {
 
   return (
     <motion.div
-      className={styles.cartcontainer}
+      className={styles.cartContainer}
       initial={{ x: "100%" }}
       animate={{ x: isCartOpen ? 0 : "100%" }}
       exit={{ x: "100%" }}
       transition={{ duration: 0.8, ease: "easeInOut" }}>
-      <div className={styles.rightsection}>
+      <div className={styles.cartSection}>
         <div className={styles.crossicon}>
           <RxCross1 onClick={handleShowCart} />
         </div>

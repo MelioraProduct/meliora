@@ -11,10 +11,6 @@
   margin: auto;
 }
 
-.cartitems hr {
-  background-color: white;
-}
-
 .label {
   display: flex;
   justify-content: space-between;
@@ -281,19 +277,6 @@
 }
 
 @media screen and (max-width: 1110px) {
-  .cartcontainer .leftsection {
-    /* background-color: rgba(0,0,0,0.5); */
-    width: 0%;
-  }
-
-  .cartcontainer .rightsection {
-    width: 100%;
-  }
-
-  .cartcontainer {
-    height: 100vh;
-  }
-
   .reviewsection h2 {
     font-size: 20px;
   }

@@ -6,7 +6,7 @@ export function Reviews() {
   const reviews = useSelector(selectAllReviews);
 
   return (
-    <div className='h-[40rem] rounded-md flex flex-col gap-10 antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden'>
+    <div className='h-[50rem] md:h-[40rem] rounded-md flex flex-col gap-10 antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden'>
       <h1 className='text-4xl font-bold dark:text-white'>Testimonials</h1>
       {reviews.length > 0 ? (
         <InfiniteMovingCards
