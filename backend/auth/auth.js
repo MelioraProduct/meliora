@@ -22,6 +22,7 @@ const generateRefreshToken = (userId) => {
 
 const userSignUp = async (req, res) => {
   const { name, email, password } = req.body;
+  console.log("req.body", req.body);
 
   try {
     // Check if the user already exists
@@ -30,28 +31,24 @@ const userSignUp = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create a new user
     const newUser = new Customer({ name, email, password });
     await newUser.save();
 
-    // Generate access and refresh tokens
-    const accessToken = generateAccessToken(newUser._id);
     const refreshToken = generateRefreshToken(newUser._id);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
 
-    // Send response with tokens and user info
     res.status(201).json({
-      accessToken,
-      refreshToken,
       user: {
-        email: newUser.email,
         name: newUser.name,
-        picture: newUser.picture || null, // Assuming optional fields
-        address: newUser.address || null,
-        isVerified: newUser.isVerified || false,
+        email: newUser.email,
       },
     });
   } catch (error) {
-    console.error("Error in userSignUp:", error);
+    console.error("Error in user SignUp:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -78,10 +75,14 @@ const userSignIn = async (req, res) => {
 
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
 
     res.status(200).json({
       accessToken,
-      refreshToken,
       user: {
         email: user.email,
         name: user.name,
@@ -118,13 +119,18 @@ const adminLogin = async (req, res) => {
 
     const accessToken = generateAccessToken(admin._id, "admin");
     const refreshToken = generateRefreshToken(admin._id, "admin");
+    res.cookie("AdminRefreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    });
 
     res.status(200).json({
       accessToken,
-      refreshToken,
       admin: {
-        email: admin.email,
         name: admin.name,
+        email: admin.email,
+        phone: admin.phone || "",
         role: admin.role,
         image: admin.image,
       },
@@ -156,7 +162,7 @@ const refreshToken = (req, res) => {
 const verifyToken = (req, res) => {
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
-  const tokenType = req.headers["token-type"]; // either "access" or "refresh"
+  const tokenType = req.headers["token-type"];
 
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
