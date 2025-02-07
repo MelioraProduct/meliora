@@ -1,103 +1,46 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../redux/useAuth";
 import CustomAlert from "../../components/CustomAlert";
-import axios from "axios";
+import { validateEmail, validatePassword } from "../../utils/validation";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { login } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [alert, setAlert] = useState({ type: "", text: "", open: false });
 
-  const handleCloseAlert = () => {
-    setAlert((prev) => ({ ...prev, open: false }));
-  };
+  const handleCloseAlert = () => setAlert((prev) => ({ ...prev, open: false }));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Validate inputs
-    if (name === "email") {
-      if (value === "") {
-        setErrors((prev) => ({ ...prev, email: "" }));
-      } else {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        setErrors((prev) => ({
-          ...prev,
-          email: emailRegex.test(value) ? "" : "Invalid email address",
-        }));
-      }
-    } else if (name === "password") {
-      if (value === "") {
-        setErrors((prev) => ({ ...prev, password: "" }));
-      } else {
-        setErrors((prev) => ({
-          ...prev,
-          password:
-            value.length >= 6 ? "" : "Password must be at least 6 characters",
-        }));
-      }
-    }
-  };
-
-  const isFieldValid = (field) => {
-    return errors[field] === "";
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.email === "") {
-      setAlert({ type: "error", text: "Please fill in email!", open: true });
-      return;
-    }
+    // Validate all fields before submitting
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    setErrors({ email: emailError, password: passwordError });
 
-    if (formData.password === "") {
-      setAlert({ type: "error", text: "Please fill in password!", open: true });
-      return;
-    }
+    // Stop submission if there are errors
+    if (emailError || passwordError) return;
 
     try {
-      const response = await axios.post("/auth/user/signin", {
-        email: formData.email,
-        password: formData.password,
-      });
-      if (response.status === 200) {
-        await login(
-          response.data.user,
-          response.data.accessToken,
-          response.data.refreshToken
-        );
-        setAlert({
-          type: "success",
-          text: "Sign in successful! Redirecting...",
-          open: true,
-        });
-        setTimeout(() => navigate(location.state?.from || "/"), 1500);
-      }
+      await login(formData.email, formData.password);
+      setAlert({ type: "success", text: "Sign in successful!", open: true });
+
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
-      const status = error.response?.status;
-      if (status === 404) {
-        setAlert({
-          type: "warning",
-          text: "Invalid email or password.",
-          open: true,
-        });
-      } else {
-        setAlert({
-          type: "error",
-          text: "Something went wrong. Please try again later.",
-          open: true,
-        });
-      }
+      setAlert({
+        type: "error",
+        text: error || "Invalid credentials",
+        open: true,
+      });
     }
   };
 
@@ -123,8 +66,7 @@ export default function SignIn() {
               id='email'
               name='email'
               className={`${styles.input} ${
-                formData.email &&
-                (isFieldValid("email") ? styles.valid : styles.invalid)
+                errors.email ? styles.invalid : styles.valid
               }`}
               value={formData.email}
               onChange={handleInputChange}
@@ -142,8 +84,7 @@ export default function SignIn() {
               id='password'
               name='password'
               className={`${styles.input} ${
-                formData.password &&
-                (isFieldValid("password") ? styles.valid : styles.invalid)
+                errors.password ? styles.invalid : styles.valid
               }`}
               value={formData.password}
               onChange={handleInputChange}

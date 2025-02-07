@@ -8,10 +8,10 @@ import {
   IconBuildingStore,
   IconLibrary,
 } from "@tabler/icons-react";
-// import useAuth from "../redux/useAuth";
+import useAuth from "../redux/useAuth";
 
 export default function Navbar() {
-  // const { isAuthenticated } = useAuth();
+  const { auth } = useAuth();
 
   const navItems = [
     {
@@ -53,6 +53,14 @@ export default function Navbar() {
       icon: <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />,
     },
   ];
+
+  if (auth.isAuthenticated) {
+    navItems.splice(5, 0, {
+      name: "Profile",
+      link: "/profile",
+      icon: <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />,
+    });
+  }
 
   return (
     <div className='relative w-full'>

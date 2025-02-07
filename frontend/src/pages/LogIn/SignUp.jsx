@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
-import axios from "axios";
 import useAuth from "../../redux/useAuth";
 import CustomAlert from "../../components/CustomAlert";
+import {
+  validateName,
+  validateEmail,
+  validatePassword,
+} from "../../utils/validation";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { auth, register } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,54 +20,11 @@ export default function SignUp() {
   const [errors, setErrors] = useState({ name: "", email: "", password: "" });
   const [alert, setAlert] = useState({ type: "", text: "", open: false });
 
-  const handleCloseAlert = () => {
-    setAlert((prev) => ({ ...prev, open: false }));
-  };
-
-  const validateName = (name) => {
-    if (!name) return "Name is required.";
-    if (/^[^a-zA-Z]/.test(name)) return "Name must start with alphabets only.";
-    if (name.length < 3) return "Name must be at least 3 characters long.";
-    if (/[^a-zA-Z\s]/.test(name))
-      return "Name must contain only alphabets and spaces.";
-    return "";
-  };
-
-  const validateEmail = (email) => {
-    if (!email) return "Email is required.";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email) ? "" : "Invalid email address.";
-  };
-
-  const validatePassword = (password) => {
-    if (!password) return "Password is required.";
-    if (password.length < 6)
-      return "Password must be at least 6 characters long.";
-    if (!/[A-Z]/.test(password))
-      return "Password must contain at least one uppercase letter.";
-    if (!/[0-9]/.test(password))
-      return "Password must contain at least one number.";
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password))
-      return "Password must contain at least one special character.";
-    if (formData.name && password.includes(formData.name))
-      return "Password must not contain your name for security reasons.";
-    return "";
-  };
+  const handleCloseAlert = () => setAlert((prev) => ({ ...prev, open: false }));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    if (name === "name")
-      setErrors((prev) => ({ ...prev, name: validateName(value) }));
-    if (name === "email")
-      setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
-    if (name === "password")
-      setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -74,46 +35,36 @@ export default function SignUp() {
     const passwordError = validatePassword(formData.password);
 
     setErrors({ name: nameError, email: emailError, password: passwordError });
-
     if (nameError || emailError || passwordError) {
+      return;
+    }
+
+    if (
+      formData.name === auth.user?.name &&
+      formData.email === auth.user?.email
+    ) {
       setAlert({
         type: "error",
-        text: "Please fix the errors in the form.",
+        text: "User session already exists with this email. Use a different email to create a new account.",
         open: true,
       });
       return;
     }
 
     try {
-      const response = await axios.post("/auth/user/signup", formData);
-
-      if (response.status === 201) {
-        const { accessToken, refreshToken, user } = response.data;
-        await login(user, accessToken, refreshToken);
-
-        setAlert({
-          type: "success",
-          text: "Sign up successful! Redirecting...",
-          open: true,
-        });
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
-      }
+      await register(formData.name, formData.email, formData.password);
+      setAlert({
+        type: "success",
+        text: "Account created! Please sign in.",
+        open: true,
+      });
+      setTimeout(() => navigate("/signin"), 1500);
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setAlert({
-          type: "error",
-          text: "User already exists. Please log in.",
-          open: true,
-        });
-      } else {
-        setAlert({
-          type: "error",
-          text: "An error occurred. Please try again later.",
-          open: true,
-        });
-      }
+      setAlert({
+        type: "error",
+        text: error || "Invalid credentials",
+        open: true,
+      });
     }
   };
 
@@ -138,9 +89,7 @@ export default function SignUp() {
               type='text'
               id='name'
               name='name'
-              className={`${styles.input} ${
-                formData.name && !errors.name ? styles.valid : styles.invalid
-              }`}
+              className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
               value={formData.name}
               onChange={handleInputChange}
               placeholder='Enter your name'
@@ -157,7 +106,7 @@ export default function SignUp() {
               id='email'
               name='email'
               className={`${styles.input} ${
-                formData.email && !errors.email ? styles.valid : styles.invalid
+                errors.email ? styles.invalid : ""
               }`}
               value={formData.email}
               onChange={handleInputChange}
@@ -175,9 +124,7 @@ export default function SignUp() {
               id='password'
               name='password'
               className={`${styles.input} ${
-                formData.password && !errors.password
-                  ? styles.valid
-                  : styles.invalid
+                errors.password ? styles.invalid : ""
               }`}
               value={formData.password}
               onChange={handleInputChange}
@@ -195,11 +142,7 @@ export default function SignUp() {
 
         <p className={styles.redirectText}>
           Already Registered?{" "}
-          <span
-            className={styles.link}
-            onClick={() => {
-              navigate("/signin");
-            }}>
+          <span className={styles.link} onClick={() => navigate("/signin")}>
             Sign In
           </span>
         </p>

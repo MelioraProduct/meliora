@@ -24,7 +24,7 @@ export const FloatingNav = ({
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth();
+  const { auth, logout } = useAuth();
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
@@ -44,10 +44,6 @@ export const FloatingNav = ({
 
   const handleLogin = async () => {
     navigate("/signin");
-  };
-
-  const handleLogout = () => {
-    logout();
   };
 
   return (
@@ -80,10 +76,10 @@ export const FloatingNav = ({
           </a>
         ))}
         <button className='border text-xs sm:text-sm capitalize font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full'>
-          {!isAuthenticated ? (
-            <span onClick={handleLogin}>Log In</span>
+          {auth.isAuthenticated ? (
+            <span onClick={logout}>Log Out</span>
           ) : (
-            <span onClick={handleLogout}>Log Out</span>
+            <span onClick={handleLogin}>Log In</span>
           )}
           <span className='absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px' />
         </button>

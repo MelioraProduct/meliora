@@ -3,9 +3,9 @@ import { Navigate } from "react-router-dom";
 import useAuth from "../redux/useAuth";
 
 export default function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { auth } = useAuth();
 
-  if (!isAuthenticated) {
+  if (auth.isAuthenticated === false) {
     return <Navigate to='/signin' />;
   }
 

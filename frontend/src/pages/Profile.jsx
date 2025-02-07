@@ -1,35 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Typography, Button, Avatar } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Avatar,
+  Typography,
+  Box,
+  Paper,
+  Button,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../redux/useAuth";
 import Loading from "../components/Loading";
+import { IconUser } from "@tabler/icons-react";
 
 export default function ProfileComponent() {
-  const { user, isAuthenticated } = useAuth();
+  const { auth } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (user !== undefined && isAuthenticated !== undefined) {
+    if (auth !== undefined) {
       setIsLoading(false);
     }
-  }, [user, isAuthenticated]);
+  }, [auth]);
 
   if (isLoading) {
     return (
-      <Container className='flex flex-col items-center justify-center h-screen'>
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}>
         <Loading />
       </Container>
     );
   }
 
-  if (!isAuthenticated || !user) {
+  if (auth.isAuthenticated === false) {
     return (
-      <Container className='flex flex-col items-center justify-center h-screen'>
-        <Typography variant='h4' className='mb-4'>
-          Please Sign In or Sign Up
-        </Typography>
-        <Typography variant='body1' className='mb-8 text-gray-600'>
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}>
+        <Typography variant='h2' className='mb-8 text-gray-600'>
           You need to be logged in to view your profile.
         </Typography>
         <div className='flex space-x-4'>
@@ -51,89 +69,96 @@ export default function ProfileComponent() {
   }
 
   const { house, street, city, state, postalCode, country } =
-    user.address || {};
+    auth.user.address || {};
 
   return (
-    <Container className='py-10'>
-      <Grid container spacing={4} className='items-center'>
-        <Grid item xs={12} sm={4} className='flex justify-center'>
-          <Avatar
-            alt={user.name}
-            src={user.profilePicture || "/default-avatar.png"}
-            className='h-32 w-32 border-2 border-gray-300'
-          />
-        </Grid>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(to bottom right, #020617, #17BEDB)",
+        padding: 3,
+      }}>
+      <Container maxWidth='md'>
+        <Paper
+          elevation={6}
+          sx={{
+            padding: 4,
+            borderRadius: 4,
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(10px)",
+            color: "white",
+          }}>
+          <Grid container spacing={4} alignItems='center'>
+            <Grid
+              item
+              xs={12}
+              sm={4}
+              sx={{ display: "flex", justifyContent: "center" }}>
+              <Avatar
+                alt={auth.user.name}
+                src={auth.user.profilePicture || <IconUser />}
+                sx={{ width: 128, height: 128, border: "4px solid #17BEDB" }}
+              />
+            </Grid>
 
-        <Grid item xs={12} sm={8}>
-          <Typography variant='h4' className='mb-2'>
-            {user.name}
-          </Typography>
-          <Typography variant='body1' className='text-gray-600'>
-            {user.email}
-          </Typography>
-          <Typography variant='body2' className='mt-4 text-gray-500'>
-            Joined on: {new Date(user.joinedDate).toLocaleDateString() || "N/A"}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container spacing={4} className='mt-10'>
-        <Grid item xs={12} md={6}>
-          <div className='p-6 bg-gray-100 rounded-lg'>
-            <Typography variant='h6' className='mb-2'>
-              About Me
-            </Typography>
-            <Typography variant='body2' className='text-gray-600'>
-              {user.bio || "No bio available."}
-            </Typography>
-          </div>
-        </Grid>
+            <Grid item xs={12} sm={8} textAlign={{ xs: "center", sm: "left" }}>
+              <Typography variant='h4' fontWeight={600} gutterBottom>
+                {auth.user.name}
+              </Typography>
+              <Typography variant='body1' color='gray.300'>
+                {auth.user.email}
+              </Typography>
+            </Grid>
+          </Grid>
 
-        <Grid item xs={12} md={6}>
-          <div className='p-6 bg-gray-100 rounded-lg'>
-            <Typography variant='h6' className='mb-2'>
+          <Box
+            mt={4}
+            p={3}
+            borderRadius={2}
+            sx={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}>
+            <Typography variant='h6' fontWeight={600} gutterBottom>
               Address
             </Typography>
-            {user.address ? (
+            {auth.user.address ? (
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant='body2' className='text-gray-600'>
+                  <Typography variant='body2'>
                     House: {house || "N/A"}
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant='body2' className='text-gray-600'>
+                  <Typography variant='body2'>
                     Street: {street || "N/A"}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant='body2' className='text-gray-600'>
-                    City: {city || "N/A"}
-                  </Typography>
+                  <Typography variant='body2'>City: {city || "N/A"}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant='body2' className='text-gray-600'>
+                  <Typography variant='body2'>
                     State: {state || "N/A"}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant='body2' className='text-gray-600'>
+                  <Typography variant='body2'>
                     Postal Code: {postalCode || "N/A"}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant='body2' className='text-gray-600'>
+                  <Typography variant='body2'>
                     Country: {country || "N/A"}
                   </Typography>
                 </Grid>
               </Grid>
             ) : (
-              <Typography variant='body2' className='text-gray-600'>
-                Address not available.
-              </Typography>
+              <Typography variant='body2'>Address not available.</Typography>
             )}
-          </div>
-        </Grid>
-      </Grid>
-    </Container>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
