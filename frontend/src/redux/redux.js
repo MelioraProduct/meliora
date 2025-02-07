@@ -4,6 +4,7 @@ import productsReducer from "./reducers/products";
 import reviewsReducer from "./reducers/reviews";
 import blogsReducer from "./reducers/blogs";
 import orderReducer from "./reducers/order";
+import authReducer from "./reducers/authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     reviews: reviewsReducer,
     blogs: blogsReducer,
     order: orderReducer,
+    auth: authReducer,
   },
 });
