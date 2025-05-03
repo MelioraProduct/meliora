@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@mui/joy";
 import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,8 @@ export default function ProductDetails() {
   const currency = "Rs.";
   const { id: productId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const products = useSelector(selectAllProducts);
   const product = products.find((p) => p._id === productId);
@@ -33,6 +35,12 @@ export default function ProductDetails() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Add a small delay to ensure products are loaded
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleShowCart = () => {
@@ -48,6 +56,11 @@ export default function ProductDetails() {
   };
 
   const handleAddToCart = () => {
+    if (!product) {
+      toast.error("Product not found");
+      return;
+    }
+
     if (selectedSizeIndex === null) {
       toast.error("Please select a size");
       return;
@@ -70,8 +83,26 @@ export default function ProductDetails() {
     toast.success("Added to cart!");
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
   if (!product) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <div className="text-white text-xl">Product not found</div>
+        <button 
+          onClick={() => navigate('/')}
+          className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200 transition-colors"
+        >
+          Go to Home
+        </button>
+      </div>
+    );
   }
 
   return (
