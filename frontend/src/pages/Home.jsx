@@ -1,85 +1,54 @@
-import { motion } from "framer-motion";
 import React from "react";
-import { AuroraBackground } from "../ui/aurora-background";
-import { FlipWords } from "../ui/flip-words";
 import Products from "../components/Products";
 import { Reviews } from "../components/Reviews";
-import { WaveAd } from "../components/WaveAd";
 import Blogs from "../components/Blogs";
 import logo from "../assets/logoSVG.png";
 import Navbar from "../components/Navbar";
 import WholeSale from "../components/WholeSale";
 
-const words = [
-  "Eco-Friendly Solutions",
-  "Advanced Cleaning Tech",
-  "High-Efficiency",
-  "Industrial Strength",
-  "Safe for Home Use",
-  "Surface Protection",
-  "Fast-Acting Formulas",
-  "Non-Toxic Ingredients",
-  "Odor Neutralization",
-  "Multi-Purpose Use",
-  "Long-Lasting",
-  "Cost-Effective Solutions",
-  "Heavy-Duty Cleaning",
-  "Stain Removal",
-];
-
 export default function Home() {
+  const scrollToProducts = () => {
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className='relative' style={{ backgroundColor: "black" }}>
-      {/* Floating Navigation */}
       <Navbar />
-      <section id='home'>
-        <AuroraBackground>
-          <motion.div
-            initial={{ opacity: 0.0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.3,
-              duration: 0.8,
-              ease: "easeInOut",
-            }}
-            className='relative flex flex-col gap-4 items-center justify-center px-4'>
-            <img
-              src={logo}
-              alt='Meliora Logo'
-              className='w-60 md:w-72'
-              style={{ marginTop: "-6%" }}
-            />
-            <div
-              className='text-3xl md:text-7xl font-bold dark:text-white text-center'
-              style={{ marginTop: "-12%" }}>
-              Meliora Products <br />
-              <span className='font-extralight text-base md:text-4xl dark:text-neutral-200 py-4'>
-                <FlipWords words={words} />
-              </span>
+      <section id='home' className="min-h-screen flex flex-col items-center justify-center px-4 py-20">
+        <div className="flex flex-col gap-4 items-center justify-center">
+          <img
+            src={logo}
+            alt='Meliora Logo'
+            className='w-60 md:w-72'
+          />
+          <div className='text-3xl md:text-7xl font-bold text-white text-center'>
+            Meliora Products
+            <div className='font-extralight text-base md:text-4xl text-neutral-200 py-4'>
+              Elevating Cleanliness, Empowering Excellence
             </div>
-            <div className='font-extralight text-base md:text-2xl dark:text-neutral-200 py-4'>
-              Elevating Cleanliness, Empowering Excellence.
-            </div>
-            <button className='bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2'>
-              Shop now
-            </button>
-          </motion.div>
-        </AuroraBackground>
+          </div>
+          <button 
+            onClick={scrollToProducts}
+            className='bg-white text-black rounded-full px-6 py-3 font-medium hover:bg-neutral-200 transition-colors'
+          >
+            Shop now
+          </button>
+        </div>
       </section>
 
-      <section id='products'>
+      <section id='products' className="py-20">
         <Products />
       </section>
-      <section id='wholeSale'>
+      <section id='wholeSale' className="py-20">
         <WholeSale />
       </section>
-      <div className='relative z-10' id='whyus'>
-        <WaveAd />
-      </div>
-      <section id='blogs'>
+      <section id='blogs' className="py-20">
         <Blogs />
       </section>
-      <section id='reviews'>
+      <section id='reviews' className="py-20">
         <Reviews />
       </section>
     </div>

@@ -1,15 +1,18 @@
 :root {
   --primary-color: #020617;
   --hover-color: #195ea5;
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
 }
 
 .maincontainer {
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  justify-items: stretch;
-  align-items: stretch;
-  border: 1px solid var(--hover-color);
+  gap: 2rem;
 }
 
 .maincontainer > * {
@@ -38,37 +41,42 @@
 .carouselDots {
   display: flex;
   justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
 .dot {
-  height: 10px;
-  width: 10px;
-  background-color: #bbb;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
-  margin: 0 5px;
+  background-color: var(--border-color);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .dot.activeDot {
-  background-color: #333;
+  background-color: var(--hover-color);
 }
 
 .productImgSection {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30em;
-  width: 100%;
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .productImg {
+  width: 100%;
   height: 100%;
-  width: auto;
-  max-width: 100%;
-  transition: transform 0.5s ease-in-out;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.productImg:hover {
+  transform: scale(1.05);
 }
 
 .subDetail,
@@ -79,70 +87,157 @@
 }
 
 .rightsection {
-  padding: 2em;
-}
-
-.price {
-  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .rightsection h1 {
-  font-size: 25px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--hover-color);
 }
 
 .rightsection p {
   font-size: 15px;
 }
 
-.buttons {
+.description {
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.sizeButtons {
   display: flex;
-  gap: 0.5em;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.buttons button {
+.sizeButton {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  background: white;
+  color: var(--text-color);
   cursor: pointer;
-  font-size: 14px;
-  border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
-.sizeButton,
+.sizeButton.selected {
+  background: var(--hover-color);
+  border-color: var(--hover-color);
+  color: white;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .quantityButton {
-  padding: 0.5em 1em;
-  border: 2px solid var(--hover-color);
-  color: var(--hover-color);
-  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  background: white;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quantityButton:hover {
+  background: var(--hover-color);
+  border-color: var(--hover-color);
+  color: white;
+}
+
+.quantityDisplay {
+  font-size: 1.25rem;
+  font-weight: 600;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.addToCartButton {
+  flex: 1;
+  padding: 1rem;
+  background: var(--hover-color);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.sizeButton.selected,
-.quantityButton.selected {
-  background-color: var(--hover-color);
-  border: 2px solid var(--hover-color);
+.addToCartButton:hover {
+  background: #144b7c;
+}
+
+.whatsappButton {
+  padding: 1rem;
+  background: #25D366;
   color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.whatsappButton:hover {
+  background: #1da851;
 }
 
 .deliveryDetails {
-  margin-top: 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.delivery {
+.deliveryItem {
   display: flex;
-  gap: 0.5em;
   align-items: center;
-  border: 2px solid var(--primary-color);
-  border-radius: 5px;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.logo {
-  font-size: 30px;
-  font-weight: bold;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding: 0.7em;
+.deliveryItem:last-child {
+  border-bottom: none;
+}
+
+.deliveryIcon {
+  font-size: 1.5rem;
+  color: var(--hover-color);
+}
+
+.deliveryText {
+  flex: 1;
+}
+
+.deliveryText h3 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.deliveryText p {
+  color: #6b7280;
+  font-size: 0.875rem;
 }
 
 .cartoptions {
@@ -215,17 +310,26 @@ button:focus {
   object-fit: contain;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .maincontainer {
     grid-template-columns: 1fr;
+    padding: 1rem;
   }
-  .rightsection {
-    padding: 0.6em;
+
+  .rightsection h1 {
+    font-size: 1.5rem;
   }
-  .descriptionTextContainer {
-    grid-template-columns: 1fr;
+
+  .price {
+    font-size: 1.25rem;
   }
-  .text {
-    padding: 5px;
+
+  .actionButtons {
+    flex-direction: column;
+  }
+
+  .deliveryDetails {
+    margin-top: 1rem;
+    padding: 1rem;
   }
 }
