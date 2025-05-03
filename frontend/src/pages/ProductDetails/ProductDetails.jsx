@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@mui/joy";
 import { FiTruck } from "react-icons/fi";
 import { LiaSyncAltSolid } from "react-icons/lia";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,8 +21,6 @@ export default function ProductDetails() {
   const currency = "Rs.";
   const { id: productId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
 
   const products = useSelector(selectAllProducts);
   const product = products.find((p) => p._id === productId);
@@ -35,12 +33,6 @@ export default function ProductDetails() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Add a small delay to ensure products are loaded
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
   }, []);
 
   const handleShowCart = () => {
@@ -51,56 +43,52 @@ export default function ProductDetails() {
     setSelectedSizeIndex(index);
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
   const handleDotClick = (index) => {
     setCurrentImageIndex(index);
   };
 
   const handleAddToCart = () => {
-    if (!product) {
-      toast.error("Product not found");
-      return;
-    }
-
     if (selectedSizeIndex === null) {
-      toast.error("Please select a size");
+      toast.error("Please select a size before adding to cart.", {
+        autoClose: 2000,
+        position: "top-center",
+      });
       return;
     }
 
     const selectedSize = product.sizes[selectedSizeIndex];
-    const price = getPriceForSize(product, selectedSize);
 
     dispatch(
       addToCart({
         productId: product._id,
-        name: product.name,
-        size: selectedSize,
-        price,
+        productName: product.name,
+        productImage: product.frontImage,
+        productSize: selectedSize.size,
+        productPrice: selectedSize.price,
         quantity: limit,
-        image: product.frontImage,
       })
     );
 
-    toast.success("Added to cart!");
+    toast.success(`Cart updated: ${limit} item(s) added`, {
+      autoClose: 1000,
+      position: "top-center",
+    });
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
-  }
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <div className="text-white text-xl">Product not found</div>
-        <button 
-          onClick={() => navigate('/')}
-          className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200 transition-colors"
-        >
-          Go to Home
-        </button>
+      <div className='h-screen w-full flex justify-center items-center'>
+        Loading...
       </div>
     );
   }
@@ -110,6 +98,9 @@ export default function ProductDetails() {
       <Navbar />
       <AnimatePresence>{showCart && <Cart />}</AnimatePresence>
       <div className={styles.maincontainer}>
+        <span className={styles.whatsapplogo}>
+          <WhatsAppLink product={product.name} />
+        </span>
         <div className={styles.leftsection}>
           <div
             className={styles.productImgSection}
@@ -117,7 +108,9 @@ export default function ProductDetails() {
             onMouseLeave={() => setIsPaused(false)}>
             <img
               className={styles.productImg}
-              src={currentImageIndex === 0 ? product.frontImage : product.backImage}
+              src={
+                currentImageIndex === 0 ? product.frontImage : product.backImage
+              }
               alt={product.name}
             />
           </div>
@@ -131,21 +124,21 @@ export default function ProductDetails() {
                 onClick={() => handleDotClick(index)}></span>
             ))}
           </div>
-        </div>
-
-        <div className={styles.rightsection}>
-          <h1>{product.name}</h1>
-          <div className={styles.price}>
-            {selectedSizeIndex !== null
-              ? `${currency} ${getPriceForSize(
-                  product,
-                  product.sizes[selectedSizeIndex]
-                )}`
-              : "Select a size"}
+          <div className={styles.subDetail}>
+            <p>{product.subDetail}</p>
           </div>
-          <p className={styles.description}>{product.description}</p>
-
-          <div className={styles.sizeButtons}>
+        </div>
+        <div className={styles.rightsection}>
+          <h1 style={{ fontWeight: "bold", textTransform: "capitalize" }}>
+            {product.name}
+          </h1>
+          <h1>{getPriceForSize(product.sizes)}</h1>
+          <h5 className={styles.price}>Total Price - Calculated at checkout</h5>
+          <div className={styles.para}>
+            <p>{product.detail}</p>
+          </div>
+          <h5 style={{ fontWeight: "500", marginTop: "10px" }}>Size:</h5>
+          <div className={styles.buttons}>
             {product.sizes.map((size, index) => (
               <button
                 key={index}
@@ -153,52 +146,103 @@ export default function ProductDetails() {
                   selectedSizeIndex === index ? styles.selected : ""
                 }`}
                 onClick={() => handleSizeClick(index)}>
-                {size}
+                {size.size}
               </button>
             ))}
           </div>
-
-          <div className={styles.quantityControls}>
-            <button
-              className={styles.quantityButton}
-              onClick={() => setLimit((prev) => Math.max(1, prev - 1))}>
-              -
-            </button>
-            <span className={styles.quantityDisplay}>{limit}</span>
-            <button
-              className={styles.quantityButton}
-              onClick={() => setLimit((prev) => prev + 1)}>
-              +
-            </button>
+          <h5 style={{ fontWeight: "500", marginTop: "10px" }}>Quantity:</h5>
+          <div className={styles.buttons}>
+            {product.sizes.map((size, index) => (
+              <button
+                key={index}
+                className={`${styles.quantityButton} ${
+                  selectedSizeIndex === index ? styles.selected : ""
+                }`}>
+                {size.quantity}
+              </button>
+            ))}
           </div>
-
-          <div className={styles.actionButtons}>
-            <button className={styles.addToCartButton} onClick={handleAddToCart}>
-              Add to Cart
-            </button>
-            <WhatsAppLink product={product.name} className={styles.whatsappButton} />
+          <h5 style={{ fontWeight: "500", marginTop: "10px" }}>Stock:</h5>
+          <div className={styles.buttons}>
+            {product.sizes.map((size, index) => (
+              <button
+                key={index}
+                className={`${styles.quantityButton} ${
+                  selectedSizeIndex === index ? styles.selected : ""
+                }`}>
+                {size.stockQuantity}
+              </button>
+            ))}
           </div>
-
+          <h5 style={{ fontWeight: "500", marginTop: "10px" }}>Price:</h5>
+          <div className={styles.buttons}>
+            {product.sizes.map((size, index) => (
+              <button
+                key={index}
+                className={`${styles.quantityButton} ${
+                  selectedSizeIndex === index ? styles.selected : ""
+                }`}>
+                {currency}
+                {size.price}
+              </button>
+            ))}
+          </div>
           <div className={styles.deliveryDetails}>
-            <div className={styles.deliveryItem}>
-              <FiTruck className={styles.deliveryIcon} />
-              <div className={styles.deliveryText}>
-                <h3>Free Delivery</h3>
-                <p>On orders above Rs. 2000</p>
+            <div className={styles.delivery}>
+              <div className={styles.logo}>
+                <FiTruck />
+              </div>
+              <div className={styles.text}>
+                <h3>Speedy Shipping!</h3>
+                <p>
+                  Your order will zoom to your doorstep in just 2-4 days. No
+                  waiting around!
+                </p>
               </div>
             </div>
-            <div className={styles.deliveryItem}>
-              <LiaSyncAltSolid className={styles.deliveryIcon} />
-              <div className={styles.deliveryText}>
-                <h3>Easy Returns</h3>
-                <p>7 days return policy</p>
+            <div className={styles.delivery}>
+              <div className={styles.logo}>
+                <LiaSyncAltSolid />
+              </div>
+              <div className={styles.text}>
+                <h3>Hassle-Free Returns!</h3>
+                <p>
+                  Enjoy free returns for 30 days. Your happiness, guaranteed!
+                </p>
               </div>
             </div>
           </div>
+          <div className={styles.cartoptions}>
+            <div className={styles.items}>
+              <button onClick={() => limit !== 1 && setLimit(limit - 1)}>
+                -
+              </button>
+              {limit}
+              <button onClick={() => setLimit(limit + 1)}>+</button>
+            </div>
+            <Button onClick={handleAddToCart}>Add to Cart</Button>
+          </div>
+          <Button onClick={() => handleShowCart()}>See Cart</Button>
         </div>
       </div>
-      <ReviewSection productId={productId} />
-      <ToastContainer position="bottom-right" />
+      <div className={styles.descriptionSection}>
+        <h1 className={styles.heading}>Product Description</h1>
+        <div className={styles.descriptionTextContainer}>
+          <div className={styles.descriptionText}>
+            <p>{product.subDetail}</p>
+            <p>{product.description}</p>
+            <br />
+            <p>{product.safetyInformation}</p>
+          </div>
+          <img
+            className={styles.descriptionImage}
+            src={product.frontImage}
+            alt={product.name}
+          />
+        </div>
+      </div>
+      <ReviewSection product={product} />
+      <ToastContainer />
     </>
   );
 }
