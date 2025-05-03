@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { IoMdClose } from "react-icons/io";
 import Button from "@mui/material/Button";
 import styles from "./style.module.css";
 // import useAdminAuth from "../../hooks/useAdminAuth";
@@ -11,44 +12,67 @@ export default function Admin() {
   const navigate = useNavigate();
 
   return (
-    <>
-      <header>
-        <img
-          className='size-20'
-          src='/images/assets/logo.png'
-          alt='Meliora Logo'
-        />
-        <nav>
-          <ul className={nav ? `${styles.show}` : `${styles.hide}`}>
-            <li>
-              <Link to='/admin/dashboard'>Dashboard</Link>
+    <header className={styles.adminHeader}>
+      <div className={styles.headerContent}>
+        <div className={styles.logoContainer}>
+          <img
+            className={styles.logo}
+            src='/images/assets/logo.png'
+            alt='Meliora Logo'
+          />
+        </div>
+        
+        <nav className={`${styles.nav} ${nav ? styles.navOpen : ''}`}>
+          <ul className={styles.navList}>
+            <li className={styles.navItem}>
+              <Link to='/admin/dashboard' className={styles.navLink}>
+                Dashboard
+              </Link>
             </li>
-            <li>
-              <Link to='/admin/orders'>Orders</Link>
+            <li className={styles.navItem}>
+              <Link to='/admin/orders' className={styles.navLink}>
+                Orders
+              </Link>
             </li>
-            <li>
-              <Link to='/admin/products'>Products</Link>
+            <li className={styles.navItem}>
+              <Link to='/admin/products' className={styles.navLink}>
+                Products
+              </Link>
             </li>
-            <li>
-              <Link to='/admin/packages'>Packages</Link>
+            <li className={styles.navItem}>
+              <Link to='/admin/packages' className={styles.navLink}>
+                Packages
+              </Link>
             </li>
-            <li>
-              <Link to='/admin/blogs'>Blogs</Link>
+            <li className={styles.navItem}>
+              <Link to='/admin/blogs' className={styles.navLink}>
+                Blogs
+              </Link>
             </li>
-            <li>
-              <Link to='/admin/account'>Account</Link>
+            <li className={styles.navItem}>
+              <Link to='/admin/account' className={styles.navLink}>
+                Account
+              </Link>
             </li>
           </ul>
         </nav>
-        <div className={styles.icons}>
-          <span className={styles.hamburger} onClick={() => setNav(!nav)}>
-            <GiHamburgerMenu />
-          </span>
-          <Button onClick={() => navigate("/")} variant='outlined'>
+
+        <div className={styles.headerActions}>
+          <Button 
+            onClick={() => navigate("/")} 
+            variant='contained'
+            className={styles.logoutButton}
+          >
             Logout
           </Button>
+          <button 
+            className={styles.menuButton}
+            onClick={() => setNav(!nav)}
+          >
+            {nav ? <IoMdClose /> : <GiHamburgerMenu />}
+          </button>
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 }
