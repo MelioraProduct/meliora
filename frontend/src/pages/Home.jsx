@@ -43,6 +43,13 @@ const LoadingFallback = () => (
 );
 
 const Home = () => {
+  const scrollToProducts = () => {
+    const productsSection = document.getElementById('products-section');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className='relative bg-black'>
       <Navbar />
@@ -68,7 +75,9 @@ const Home = () => {
             <p className="text-base md:text-2xl text-neutral-200 py-4">
               Elevating Cleanliness, Empowering Excellence.
             </p>
-            <button className="bg-white text-black rounded-full px-6 py-3 font-medium hover:bg-opacity-90 transition-all">
+            <button 
+              onClick={scrollToProducts}
+              className="bg-white text-black rounded-full px-6 py-3 font-medium hover:bg-opacity-90 transition-all">
               Shop now
             </button>
           </motion.div>
