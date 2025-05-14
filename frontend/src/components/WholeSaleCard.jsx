@@ -10,9 +10,15 @@ export default function WholeSaleCard({ pkg }) {
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         <img
-          height="70"
           src={pkg.image}
           alt={pkg.name}
+          style={{
+            width: "100%",
+            height: "200px",
+            objectFit: "contain",
+            backgroundColor: "#f8fafc",
+            padding: "1rem"
+          }}
           crossOrigin={
             pkg.image.startsWith("http://localhost:3001")
               ? "anonymous"

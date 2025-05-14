@@ -272,7 +272,7 @@ export default function ProductDetails() {
             </Button>
             <Button 
               onClick={handleShowCart}
-              className="w-full mt-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors">
+              className="w-full mt-6 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors">
               See Cart
             </Button>
           </motion.div>

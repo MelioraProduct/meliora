@@ -34,12 +34,12 @@ const ProductCard = memo(({ product }) => {
         srcSet={`${product.frontImage} 1x, ${product.frontImage} 2x`}
         loading="lazy"
         alt={product.name}
-        width={300}
-        height={300}
         style={{
           width: "100%",
           height: "300px",
-          objectFit: "cover",
+          objectFit: "contain",
+          backgroundColor: "#f8fafc",
+          padding: "1rem"
         }}
       />
       <CardContent orientation="horizontal">
