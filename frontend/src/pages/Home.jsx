@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import logo from "../assets/logoSVG.png";
 import Navbar from "../components/Navbar";
+import WhatsAppLink from "../components/WhatsAppLink";
 
 // Lazy load heavy components
 const Products = lazy(() => import("../components/Products").then(module => ({ default: module.default })));
@@ -53,6 +54,7 @@ const Home = () => {
   return (
     <div className='relative bg-black'>
       <Navbar />
+      <WhatsAppLink />
       
       {/* Hero Section */}
       <section id='home' className="min-h-screen flex items-center justify-center">

@@ -1,9 +1,10 @@
 import React from "react";
+import { FaWhatsapp } from "react-icons/fa";
 import styles from "./style.module.css";
 
 const WhatsAppLink = ({ product }) => {
-  const phoneNumber = "+92 301 4666999";
-  const message = `Hello, I have a question about ${product}!`;
+  const phoneNumber = "+923204023398";
+  const message = product ? `Hello, I have a question about ${product}!` : "Hello, I have a question!";
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
     message
@@ -27,7 +28,7 @@ const WhatsAppLink = ({ product }) => {
 
   return (
     <span className={styles.whatsapplogo} onClick={handleClick}>
-      <img src='/images/WhatsApp.png' alt='Contact WhatsApp' />
+      <FaWhatsapp className="text-4xl text-green-500" />
     </span>
   );
 };
