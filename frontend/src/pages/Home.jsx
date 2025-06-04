@@ -53,82 +53,61 @@ const Home = () => {
   };
 
   return (
-    <div className='relative min-h-screen bg-gradient-to-br from-white via-primary-100 to-primary-200'>
-      {/* Multiple layered gradients for rich color effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary-300/50 via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-200/50 via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-100/30 via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,_var(--tw-gradient-stops))] from-primary-400/20 via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(-45deg,_var(--tw-gradient-stops))] from-primary-500/20 via-transparent to-transparent"></div>
-      
+    <div className='relative bg-gradient-to-b from-slate-50 to-slate-100'>
       <Navbar />
       
-      {/* Hero Section with Background Image */}
+      {/* Hero Section */}
       <section id='home' className="min-h-screen flex items-center justify-center relative">
-        {/* Background Image with Overlay */}
+        {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070')] bg-cover bg-center"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-white/75 via-white/65 to-white/55"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-transparent to-white/55"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-100/15 via-transparent to-transparent"></div>
+          <img
+            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070"
+            alt="Professional Cleaning Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-100/80"></div>
         </div>
 
-        <div className="relative w-full max-w-7xl mx-auto px-4 z-10">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
           <motion.div
             {...fadeIn}
             className="flex flex-col gap-4 items-center justify-center text-center">
             <img
               src={logo}
               alt='Meliora Logo'
-              className='w-60 md:w-72 mb-8'
+              className='w-60 md:w-72 mb-8 drop-shadow-lg'
               loading="eager"
             />
-            <h1 className="text-3xl md:text-7xl font-bold text-gray-900">
+            <h1 className="text-3xl md:text-7xl font-bold text-slate-800 drop-shadow-sm">
               Meliora Products
             </h1>
-            <p className="text-xl md:text-4xl text-gray-700 py-4">
-              {words[0]} {/* Static text instead of animation */}
+            <p className="text-xl md:text-4xl text-slate-600 py-4 font-medium">
+              {words[0]}
             </p>
-            <p className="text-base md:text-2xl text-gray-600 py-4">
+            <p className="text-lg md:text-xl text-slate-500 max-w-2xl">
               Elevating Cleanliness, Empowering Excellence.
             </p>
-            <motion.button 
+            <button 
               onClick={scrollToProducts}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-primary-600 via-primary-500 to-primary-700 text-white rounded-full px-8 py-3 font-medium hover:from-primary-700 hover:via-primary-600 hover:to-primary-800 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
+              className="bg-blue-500 text-white rounded-full px-8 py-4 font-medium hover:bg-blue-600 transition-all shadow-lg hover:shadow-xl text-lg">
               Shop now
-              <FaArrowRight className="w-4 h-4" />
-            </motion.button>
+            </button>
           </motion.div>
         </div>
       </section>
 
       {/* Lazy loaded sections */}
       <Suspense fallback={<LoadingFallback />}>
-        <section id='products' className="relative bg-gradient-to-br from-white via-primary-50 to-primary-100">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-primary-200/40 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-primary-100/40 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(135deg,_var(--tw-gradient-stops))] from-primary-300/20 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(-135deg,_var(--tw-gradient-stops))] from-primary-400/20 via-transparent to-transparent"></div>
-          <div id="products-section" className="relative">
+        <section id='products' className="bg-gradient-to-br from-pink-50 via-sky-50 to-blue-50">
+          <div id="products-section">
             <Products />
           </div>
         </section>
       </Suspense>
 
       <Suspense fallback={<LoadingFallback />}>
-        <section id='wholeSale' className="relative bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200">
-          {/* Enhanced gradient background for wholesale section */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary-300/40 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-200/40 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,_var(--tw-gradient-stops))] from-primary-400/20 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(-45deg,_var(--tw-gradient-stops))] from-primary-500/20 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-100/30 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(135deg,_var(--tw-gradient-stops))] from-primary-300/20 via-transparent to-transparent"></div>
-          <div className="relative">
-            <WholeSale />
-          </div>
+        <section id='wholeSale' className="bg-gradient-to-br from-pink-50 via-sky-50 to-blue-50">
+          <WholeSale />
         </section>
       </Suspense>
 
@@ -139,27 +118,19 @@ const Home = () => {
       </Suspense>
 
       <Suspense fallback={<LoadingFallback />}>
-        <section id='blogs' className="relative bg-gradient-to-br from-white via-primary-50 to-primary-100">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary-200/30 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-100/30 via-transparent to-transparent"></div>
-          <div className="relative">
-            <Blogs />
-          </div>
+        <section id='blogs' className="bg-slate-50">
+          <Blogs />
         </section>
       </Suspense>
 
       <Suspense fallback={<LoadingFallback />}>
-        <section id='reviews' className="relative bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-primary-300/30 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] from-primary-200/30 via-transparent to-transparent"></div>
-          <div className="relative">
-            <Reviews />
-          </div>
+        <section id='reviews' className="bg-slate-100">
+          <Reviews />
         </section>
       </Suspense>
 
-      {/* WhatsApp Link positioned at bottom right */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* WhatsApp Link */}
+      <div className="fixed bottom-8 right-8 z-50">
         <WhatsAppLink />
       </div>
     </div>
