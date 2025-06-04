@@ -12,7 +12,7 @@ function Products() {
   });
 
   return (
-    <div className="py-16 px-4">
+    <div className="py-16 px-4 bg-gradient-to-br from-pink-50 via-sky-50 to-blue-50">
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -27,7 +27,7 @@ function Products() {
             <ProductCard key={product._id} product={product} />
           ))
         ) : (
-          <div className="text-center text-2xl font-medium text-gray-500 col-span-full">
+          <div className="text-center text-2xl font-medium text-slate-600 col-span-full">
             No products found
           </div>
         )}
