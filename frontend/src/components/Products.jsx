@@ -1,15 +1,21 @@
 import { motion } from "framer-motion";
 import ProductCard from "./ProductCard.jsx";
-import { useSelector } from "react-redux";
-import { selectAllProducts } from "../redux/reducers/products.js";
+import { useSelector, useDispatch } from "react-redux";
+import { selectAllProducts, fetchProducts } from "../redux/reducers/products.js";
 import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 function Products() {
+  const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   return (
     <div className="py-16 px-4 bg-gradient-to-br from-pink-50 via-sky-50 to-blue-50">
