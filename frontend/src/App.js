@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme';
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
@@ -125,7 +128,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -134,7 +137,12 @@ function App() {
     dispatch(fetchBlogs());
   }, [dispatch]);
 
-  return <RouterProvider router={router} />;
-}
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
+};
 
 export default App;

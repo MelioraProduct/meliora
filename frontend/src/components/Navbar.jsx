@@ -17,40 +17,40 @@ export default function Navbar() {
     {
       name: "Home",
       link: "#home",
-      icon: <IconHome className='h-4 w-4 text-neutral-500 dark:text-white' />,
+      icon: <IconHome className='h-4 w-4 text-gray-600' />,
     },
     {
       name: "Products",
       link: "/#products",
       icon: (
-        <IconShoppingCart className='h-4 w-4 text-neutral-500 dark:text-white' />
+        <IconShoppingCart className='h-4 w-4 text-gray-600' />
       ),
     },
     {
       name: "WholeSale",
       link: "#wholeSale",
       icon: (
-        <IconBuildingStore className='h-4 w-4 text-neutral-500 dark:text-white' />
+        <IconBuildingStore className='h-4 w-4 text-gray-600' />
       ),
     },
     {
       name: "Blogs",
       link: "#blogs",
       icon: (
-        <IconLibrary className='h-4 w-4 text-neutral-500 dark:text-white' />
+        <IconLibrary className='h-4 w-4 text-gray-600' />
       ),
     },
     {
       name: "Reviews",
       link: "#reviews",
       icon: (
-        <IconMessage className='h-4 w-4 text-neutral-500 dark:text-white' />
+        <IconMessage className='h-4 w-4 text-gray-600' />
       ),
     },
     {
       name: "Panel",
       link: "/admin",
-      icon: <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />,
+      icon: <IconUser className='h-4 w-4 text-gray-600' />,
     },
   ];
 
@@ -58,7 +58,7 @@ export default function Navbar() {
     navItems.splice(5, 0, {
       name: "Profile",
       link: "/profile",
-      icon: <IconUser className='h-4 w-4 text-neutral-500 dark:text-white' />,
+      icon: <IconUser className='h-4 w-4 text-gray-600' />,
     });
   }
 
