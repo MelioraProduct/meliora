@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
-import Button from "@mui/material/Button";
+import Button from "@mui/joy/Button";
 import styles from "./style.module.css";
 // import useAdminAuth from "../../hooks/useAdminAuth";
 
@@ -60,7 +60,8 @@ export default function Admin() {
         <div className={styles.headerActions}>
           <Button 
             onClick={() => navigate("/")} 
-            variant='contained'
+            variant="solid"
+            color="primary"
             className={styles.logoutButton}
           >
             Logout

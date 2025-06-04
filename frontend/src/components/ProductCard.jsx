@@ -12,10 +12,6 @@ const ProductCard = memo(({ product }) => {
   
   return (
     <Card
-      color="primary"
-      invertedColors={false}
-      orientation="vertical"
-      size="md"
       variant="outlined"
       sx={{
         height: "auto",
@@ -25,7 +21,7 @@ const ProductCard = memo(({ product }) => {
         },
       }}>
       <div>
-        <Typography sx={{ textTransform: "capitalize" }} level="title-lg">
+        <Typography level="title-lg" sx={{ textTransform: "capitalize" }}>
           {product.name}
         </Typography>
       </div>
@@ -42,17 +38,16 @@ const ProductCard = memo(({ product }) => {
           padding: "1rem"
         }}
       />
-      <CardContent orientation="horizontal">
+      <CardContent>
         <div>
           <Typography level="body-md">Total price:</Typography>
-          <Typography fontSize="lg" fontWeight="lg">
+          <Typography level="title-lg" fontWeight="lg">
             {getPriceForSize(product.sizes)}
           </Typography>
         </div>
         <Button
           onClick={() => navigate("/product-details/" + product._id)}
           variant="solid"
-          size="md"
           color="primary"
           aria-label={`Explore ${product.name}`}
           sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}>

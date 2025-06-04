@@ -5,9 +5,8 @@ import {
   Avatar,
   Typography,
   Box,
-  Paper,
   Button,
-} from "@mui/material";
+} from "@mui/joy";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../redux/useAuth";
 import Loading from "../components/Loading";
@@ -43,27 +42,29 @@ export default function ProfileComponent() {
       <Container
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
+          gap: 2,
         }}>
-        <Typography variant='h2' className='mb-8 text-gray-600'>
+        <Typography level="h2" color="neutral">
           You need to be logged in to view your profile.
         </Typography>
-        <div className='flex space-x-4'>
+        <Box sx={{ display: "flex", gap: 2 }}>
           <Button
-            variant='contained'
-            color='primary'
+            variant="solid"
+            color="primary"
             onClick={() => navigate("/")}>
             Go to Home
           </Button>
           <Button
-            variant='outlined'
-            color='primary'
+            variant="outlined"
+            color="primary"
             onClick={() => navigate("/signin")}>
             Sign In
           </Button>
-        </div>
+        </Box>
       </Container>
     );
   }
@@ -82,8 +83,7 @@ export default function ProfileComponent() {
         padding: 3,
       }}>
       <Container maxWidth='md'>
-        <Paper
-          elevation={6}
+        <Box
           sx={{
             padding: 4,
             borderRadius: 4,
@@ -105,10 +105,10 @@ export default function ProfileComponent() {
             </Grid>
 
             <Grid item xs={12} sm={8} textAlign={{ xs: "center", sm: "left" }}>
-              <Typography variant='h4' fontWeight={600} gutterBottom>
+              <Typography level="h4" fontWeight={600} gutterBottom>
                 {auth.user.name}
               </Typography>
-              <Typography variant='body1' color='gray.300'>
+              <Typography level="body-md" color="neutral">
                 {auth.user.email}
               </Typography>
             </Grid>
@@ -157,7 +157,7 @@ export default function ProfileComponent() {
               <Typography variant='body2'>Address not available.</Typography>
             )}
           </Box>
-        </Paper>
+        </Box>
       </Container>
     </Box>
   );
