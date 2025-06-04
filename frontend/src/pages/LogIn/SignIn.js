@@ -13,7 +13,6 @@ import {
 } from '@mui/joy';
 import { Google as GoogleIcon } from '@mui/icons-material';
 import { signIn } from '../../redux/reducers/auth';
-import styles from './style.module.css';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
