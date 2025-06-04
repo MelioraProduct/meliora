@@ -17,6 +17,9 @@ const WholeSale = () => {
       } finally {
         setIsLoading(false);
       }
+
+
+      
     };
     fetchPackages();
   }, []);
