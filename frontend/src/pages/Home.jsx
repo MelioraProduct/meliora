@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { motion } from "framer-motion";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import React from "react";
 import logo from "../assets/logoSVG.png";
 import Navbar from "../components/Navbar";
@@ -44,6 +44,15 @@ const LoadingFallback = () => (
 );
 
 const Home = () => {
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToProducts = () => {
     const productsSection = document.getElementById('products-section');
     if (productsSection) {
@@ -56,41 +65,71 @@ const Home = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section id='home' className="min-h-screen flex items-center justify-center relative">
+      <section id='home' className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-r from-slate-900 to-slate-800">
         {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/hero-bg.jpg"
+            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
             alt="Professional Cleaning Background"
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 to-slate-800/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50"></div>
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
           <motion.div
-            {...fadeIn}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col gap-4 items-center justify-center text-center">
-            <img
+            <motion.img
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               src={logo}
               alt='Meliora Logo'
               className='w-60 md:w-72 mb-8'
               loading="eager"
             />
-            <h1 className="text-3xl md:text-7xl font-bold text-white">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-3xl md:text-7xl font-bold text-white">
               Meliora Products
-            </h1>
-            <p className="text-xl md:text-4xl text-neutral-200 py-4">
-              {words[0]}
-            </p>
-            <p className="text-lg md:text-xl text-neutral-300">
+            </motion.h1>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={currentWordIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="text-xl md:text-4xl text-neutral-200 py-4"
+              >
+                {words[currentWordIndex]}
+              </motion.p>
+            </AnimatePresence>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="text-lg md:text-xl text-neutral-300">
               Elevating Cleanliness, Empowering Excellence.
-            </p>
-            <button 
+            </motion.p>
+            <motion.button 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.3 }}
               onClick={scrollToProducts}
-              className="bg-blue-600 text-white rounded-full px-6 py-3 font-medium hover:bg-blue-700 transition-all">
+              className="bg-blue-600 text-white rounded-full px-8 py-4 font-medium hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
               Shop now
-            </button>
+            </motion.button>
           </motion.div>
         </div>
       </section>
