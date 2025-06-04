@@ -46,7 +46,7 @@ export default function Dashboard() {
 
   const circleRadius = 45;
   const circleCircumference = 2 * Math.PI * circleRadius;
-  const progress = ((topSellingProduct?.percentage || 0) / 100) * circleCircumference;
+  const progress = (topSellingProduct.percentage / 100) * circleCircumference;
 
   return (
     <div className={styles.dashboard}>
@@ -101,7 +101,7 @@ export default function Dashboard() {
                   textAnchor='middle'
                   dy='.3em'
                   className={styles.progresstext}>
-                  {topSellingProduct?.percentage || 0}%
+                  {topSellingProduct.percentage}%
                 </text>
               </svg>
               <div className={styles.label}>Total Order</div>

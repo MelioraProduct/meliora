@@ -1,12 +1,5 @@
 import React, { useEffect } from "react";
-import { Provider } from "react-redux";
-import { RouterProvider } from "react-router-dom";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import { ThemeProvider as JoyThemeProvider } from "@mui/joy/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { materialTheme, joyTheme } from "./theme";
-import { store } from "./redux/store";
-import { router } from "./router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
@@ -37,7 +30,102 @@ import axios from "axios";
 axios.defaults.baseURL = process.env.REACT_APP_API_ORIGIN;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const App = () => {
+const router = createBrowserRouter([
+  // User routes
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/signin",
+    element: <SignIn />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/product-details/:id",
+    element: <ProductDetails />,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout />,
+  },
+  {
+    path: "/order-details",
+    element: <OrderDetails />,
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <ProfileComponent />
+      </ProtectedRoute>
+    ),
+  },
+  // Admin routes
+  {
+    path: "/admin",
+    element: <AdminSignIn />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: (
+      <AdminProtectedRoute>
+        <Admin />
+        <Dashboard />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/orders",
+    element: (
+      <AdminProtectedRoute>
+        <Admin />
+        <Order />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/packages",
+    element: (
+      <AdminProtectedRoute>
+        <Admin />
+        <Packages />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/products",
+    element: (
+      <AdminProtectedRoute>
+        <Admin />
+        <AddProducts />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/blogs",
+    element: (
+      <AdminProtectedRoute>
+        <Admin />
+        <Blog />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/account",
+    element: (
+      <AdminProtectedRoute>
+        <Admin />
+        <Account />
+      </AdminProtectedRoute>
+    ),
+  },
+]);
+
+function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,16 +134,7 @@ const App = () => {
     dispatch(fetchBlogs());
   }, [dispatch]);
 
-  return (
-    <Provider store={store}>
-      <MuiThemeProvider theme={materialTheme}>
-        <JoyThemeProvider theme={joyTheme}>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </JoyThemeProvider>
-      </MuiThemeProvider>
-    </Provider>
-  );
-};
+  return <RouterProvider router={router} />;
+}
 
 export default App;

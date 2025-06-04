@@ -4,7 +4,6 @@ import React from "react";
 import logo from "../assets/logoSVG.png";
 import Navbar from "../components/Navbar";
 import WhatsAppLink from "../components/WhatsAppLink";
-import { FaArrowRight } from "react-icons/fa";
 
 // Lazy load heavy components
 const Products = lazy(() => import("../components/Products").then(module => ({ default: module.default })));
@@ -40,7 +39,7 @@ const words = [
 // Loading fallback component
 const LoadingFallback = () => (
   <div className="flex justify-center items-center min-h-[200px]">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
   </div>
 );
 
@@ -53,7 +52,7 @@ const Home = () => {
   };
 
   return (
-    <div className='relative bg-gradient-to-b from-slate-50 to-slate-100'>
+    <div className='relative bg-gradient-to-b from-slate-900 to-slate-800'>
       <Navbar />
       
       {/* Hero Section */}
@@ -61,11 +60,11 @@ const Home = () => {
         {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070"
+            src="/hero-bg.jpg"
             alt="Professional Cleaning Background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-100/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 to-slate-800/80"></div>
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
@@ -75,21 +74,21 @@ const Home = () => {
             <img
               src={logo}
               alt='Meliora Logo'
-              className='w-60 md:w-72 mb-8 drop-shadow-lg'
+              className='w-60 md:w-72 mb-8'
               loading="eager"
             />
-            <h1 className="text-3xl md:text-7xl font-bold text-slate-800 drop-shadow-sm">
+            <h1 className="text-3xl md:text-7xl font-bold text-white">
               Meliora Products
             </h1>
-            <p className="text-xl md:text-4xl text-slate-600 py-4 font-medium">
+            <p className="text-xl md:text-4xl text-neutral-200 py-4">
               {words[0]}
             </p>
-            <p className="text-lg md:text-xl text-slate-500 max-w-2xl">
+            <p className="text-lg md:text-xl text-neutral-300">
               Elevating Cleanliness, Empowering Excellence.
             </p>
             <button 
               onClick={scrollToProducts}
-              className="bg-blue-500 text-white rounded-full px-8 py-4 font-medium hover:bg-blue-600 transition-all shadow-lg hover:shadow-xl text-lg">
+              className="bg-blue-600 text-white rounded-full px-6 py-3 font-medium hover:bg-blue-700 transition-all">
               Shop now
             </button>
           </motion.div>
@@ -98,7 +97,7 @@ const Home = () => {
 
       {/* Lazy loaded sections */}
       <Suspense fallback={<LoadingFallback />}>
-        <section id='products' className="bg-gradient-to-br from-pink-50 via-sky-50 to-blue-50">
+        <section id='products' className="bg-gradient-to-b from-slate-800 to-slate-900">
           <div id="products-section">
             <Products />
           </div>
@@ -106,7 +105,7 @@ const Home = () => {
       </Suspense>
 
       <Suspense fallback={<LoadingFallback />}>
-        <section id='wholeSale' className="bg-gradient-to-br from-pink-50 via-sky-50 to-blue-50">
+        <section id='wholeSale' className="bg-gradient-to-b from-slate-900 to-slate-800">
           <WholeSale />
         </section>
       </Suspense>
@@ -118,13 +117,13 @@ const Home = () => {
       </Suspense>
 
       <Suspense fallback={<LoadingFallback />}>
-        <section id='blogs' className="bg-slate-50">
+        <section id='blogs'>
           <Blogs />
         </section>
       </Suspense>
 
       <Suspense fallback={<LoadingFallback />}>
-        <section id='reviews' className="bg-slate-100">
+        <section id='reviews'>
           <Reviews />
         </section>
       </Suspense>
