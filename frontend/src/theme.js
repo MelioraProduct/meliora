@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
+import { extendTheme } from '@mui/joy/styles';
 
-const theme = createTheme({
+const materialTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -179,4 +180,52 @@ const theme = createTheme({
   },
 });
 
-export default theme; 
+const joyTheme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          50: '#e8f0fe',
+          100: '#d2e3fc',
+          200: '#aecbfa',
+          300: '#8ab4f8',
+          400: '#669df6',
+          500: '#4285f4',
+          600: '#1a73e8',
+          700: '#174ea6',
+          800: '#0d47a1',
+          900: '#0c4a6e',
+        },
+      },
+    },
+  },
+  components: {
+    JoyCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          boxShadow: '0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15)',
+          backgroundColor: '#ffffff',
+          '& .MuiCardContent-root': {
+            padding: '16px',
+          },
+        },
+      },
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
+    JoyButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          padding: '8px 24px',
+          fontWeight: 500,
+        },
+      },
+    },
+  },
+});
+
+export { materialTheme, joyTheme };
+export default materialTheme; 
