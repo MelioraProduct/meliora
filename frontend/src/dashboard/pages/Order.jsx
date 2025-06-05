@@ -16,6 +16,25 @@ export default function Orders() {
   const [changeOrder, setChangeOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetch function moved outside useEffect for reuse
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/order");
+      if (response.data && response.data.length > 0) {
+        const ordersWithDetails = await Promise.all(
+          response.data.map((order) => fetchAdditionalData(order))
+        );
+        setOrders(ordersWithDetails);
+      } else {
+        setOrders([]);
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+    setLoading(false);
+  };
+
   const fetchAdditionalData = async (order) => {
     try {
       const productDetails = await Promise.all(
@@ -54,26 +73,8 @@ export default function Orders() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get("/order");
-
-        if (response.data && response.data.length > 0) {
-          const ordersWithDetails = await Promise.all(
-            response.data.map((order) => fetchAdditionalData(order))
-          );
-          setOrders(ordersWithDetails);
-        } else {
-          alert("No orders found");
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-      setLoading(false);
-    };
-
-    fetchData();
+    fetchOrders();
+    // eslint-disable-next-line
   }, []);
 
   const handleCompleteClick = (product) => {
@@ -97,18 +98,9 @@ export default function Orders() {
         ...changeOrder,
         status: s,
       });
-      setOrders((prevProducts) =>
-        prevProducts.map((p) =>
-          p._id === changeOrder._id ? { ...p, status: s } : p
-        )
-      );
       setShowCompleteAlert(false);
-      if (s === "completed") {
-        setShowCompleteAlert(false);
-      }
-      if (s === "cancelled") {
-        setShowCancelAlert(false);
-      }
+      setShowCancelAlert(false);
+      await fetchOrders();
     } catch (error) {
       console.error("Error updating order:", error);
     }
@@ -117,10 +109,8 @@ export default function Orders() {
   const handleDelete = async () => {
     try {
       await axios.delete(`/order/${changeOrder._id}`);
-      setOrders((prevProducts) =>
-        prevProducts.filter((p) => p._id !== changeOrder._id)
-      );
       setShowDeleteAlert(false);
+      await fetchOrders();
     } catch (error) {
       console.error("Error deleting order:", error);
     }
