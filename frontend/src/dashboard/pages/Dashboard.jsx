@@ -74,6 +74,9 @@ export default function Dashboard() {
             <div className={styles.first}>
               <h2>Top Selling Product</h2>
               <h1>{topSellingProduct.name}</h1>
+              <div className={styles.totalOrders}>
+                Total Orders: {totalOrders}
+              </div>
             </div>
             <div className={styles.progresscontainer}>
               <svg width='120' height='120' className={styles.circularchart}>
@@ -110,10 +113,14 @@ export default function Dashboard() {
         </div>
         <div className={styles.stats}>
           <div className={styles.cardone}>
-            <LineGraph />
+            <div>
+              <LineGraph />
+            </div>
           </div>
           <div className={styles.cardtwo}>
-            <BarGraph name={topSellingProduct.name} />
+            <div>
+              <BarGraph name={topSellingProduct.name} />
+            </div>
           </div>
         </div>
       </div>
