@@ -447,15 +447,27 @@ button {
   min-height: 120px;
 }
 
-.cardIcon {
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-  color: #94bbe9;
+.cardIconWrapper {
   position: absolute;
   top: 1.2rem;
   right: 1.2rem;
-  opacity: 0.18;
-  pointer-events: none;
+  width: 2.8rem;
+  height: 2.8rem;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(148, 187, 233, 0.12);
+  z-index: 2;
+}
+
+.cardIcon {
+  font-size: 1.6rem;
+  color: #94bbe9;
+  opacity: 1;
+  margin: 0;
+  position: static;
 }
 
 .cardNumber {
@@ -658,6 +670,15 @@ button {
   }
   .cardone > div, .cardtwo > div {
     min-height: 200px;
+  }
+  .cardIconWrapper {
+    width: 2rem;
+    height: 2rem;
+    top: 0.8rem;
+    right: 0.8rem;
+  }
+  .cardIcon {
+    font-size: 1.1rem;
   }
 }
 

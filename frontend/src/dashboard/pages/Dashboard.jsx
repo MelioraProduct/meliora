@@ -59,17 +59,23 @@ export default function Dashboard() {
       <div className={styles.maindashboard}>
         <div className={styles.cards}>
           <div className={styles.card}>
-            <span className={styles.cardIcon} role="img" aria-label="orders">📦</span>
+            <div className={styles.cardIconWrapper}>
+              <span className={styles.cardIcon} role="img" aria-label="orders">📦</span>
+            </div>
             <div className={styles.cardNumber}>{totalOrders}</div>
             <div className={styles.cardLabel}>Total Orders</div>
           </div>
           <div className={styles.card}>
-            <span className={styles.cardIcon} role="img" aria-label="products">🛒</span>
+            <div className={styles.cardIconWrapper}>
+              <span className={styles.cardIcon} role="img" aria-label="products">🛒</span>
+            </div>
             <div className={styles.cardNumber}>{totalProducts}</div>
             <div className={styles.cardLabel}>Total Products</div>
           </div>
           <div className={styles.card}>
-            <span className={styles.cardIcon} role="img" aria-label="revenue">💰</span>
+            <div className={styles.cardIconWrapper}>
+              <span className={styles.cardIcon} role="img" aria-label="revenue">💰</span>
+            </div>
             <div className={styles.cardNumber}>${totalRevenue ? totalRevenue.toFixed(2) : "0"}</div>
             <div className={styles.cardLabel}>Total Revenue</div>
           </div>
