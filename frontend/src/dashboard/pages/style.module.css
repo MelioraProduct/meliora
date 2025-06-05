@@ -391,134 +391,180 @@ button {
 
 .dashboard {
   padding: 2rem;
-  background: linear-gradient(135deg, #1a365d 0%, #216d9e 100%);
+  background: #f8fafc;
   min-height: 100vh;
-  color: white;
 }
 
-.dashboard .top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.top {
   margin-bottom: 2rem;
 }
 
-.dashboard h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: white;
-  margin: 0;
-}
-
-.dashboard p {
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0.5rem 0;
-}
-
-.dashboard .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.cards .card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.cards .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.card h1 {
+.left h1 {
   font-size: 2.5rem;
-  color: #1a365d;
-  margin: 0;
   font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  font-family: 'Poppins', sans-serif;
 }
 
-.card h2 {
+.left p {
   font-size: 1.1rem;
-  color: #4a5568;
-  margin: 0.5rem 0;
+  color: #64748b;
   font-weight: 500;
 }
 
-.dashboard .stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+.maindashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.stats .card-one,
-.stats .card-two {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 1rem;
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.card h2 {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.lastcard {
+  background: linear-gradient(135deg, #f5dae0 0%, #94bbe9 100%);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lastcard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.first h2 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.first h1 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
 }
 
 .progresscontainer {
   position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.circularchart {
+  transform: rotate(-90deg);
 }
 
 .circlebackground {
-  stroke: #e2e8f0;
+  stroke: rgba(255, 255, 255, 0.3);
 }
 
 .circleprogress {
-  stroke: #3182ce;
+  stroke: #1e293b;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.35s;
-  transform: rotate(0.25turn);
-  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 0.5s ease;
 }
 
 .progresstext {
-  font-size: 1.5rem;
-  fill: #2d3748;
+  transform: rotate(90deg);
+  font-size: 1.25rem;
   font-weight: 600;
+  fill: #1e293b;
+  font-family: 'Poppins', sans-serif;
 }
 
 .label {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #4a5568;
   margin-top: 0.5rem;
-}
-
-.dashboard .dashboardfilter {
-  float: right;
+  font-size: 0.875rem;
+  color: #1e293b;
+  font-weight: 500;
 }
 
 .stats {
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: 1em;
-  justify-content: space-between;
-  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
 }
 
-.stats .cardone,
-.stats .cardtwo {
-  color: white;
-  background-color: white;
-  border-radius: 1rem;
+.cardone, .cardtwo {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cardone:hover, .cardtwo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 1200px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+  }
+  
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .lastcard {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .progresscontainer {
+    margin-top: 1rem;
+  }
 }
 
 .manageItems {
