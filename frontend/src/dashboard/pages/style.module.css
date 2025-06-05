@@ -683,158 +683,177 @@ button {
 }
 
 .manageItems {
-  padding: 50px;
-  background-color: rgb(33, 109, 158);
-  height: minmax(90dvh, inherit);
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+  margin-top: 80px;
+  color: #1e293b;
+  font-family: 'Poppins', 'Inter', sans-serif;
 }
 
 .manageItems .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 2rem;
 }
 
 .manageItems h1 {
-  font-size: 25px;
-  color: white;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(123deg, #f5dae0 19%, #94bbe9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0;
+  letter-spacing: -1px;
 }
 
-.manageItems button {
-  /* float: right; */
-  padding: 15px;
-  font-size: 20px;
-  background-color: white;
-  background-color: #216d9e;
-  font-weight: bold;
-  border: 2px solid white;
-  color: white;
-  border-radius: 12px;
-}
-
-.manageItems #customers {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.products {
-  width: 100%;
-  margin: 20px auto;
+.orders {
+  margin-bottom: 2.5rem;
 }
 
 .productgrid {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr 2fr;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  margin-top: 20px;
-}
-
-.bloggrid {
-  display: grid;
-  grid-template-columns: 0.5fr repeat(2, 1fr) 2fr 0.5fr;
-  padding: 0;
-  background-color: #216d9e;
+  grid-template-columns: 1.2fr 2fr 2fr 1fr 1.2fr;
+  gap: 0.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px 0 rgba(148, 187, 233, 0.10);
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+  overflow-x: auto;
 }
 
 .header {
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2563eb;
+  background: none;
+  text-shadow: none;
+  padding-bottom: 0.5rem;
 }
 
-.productno,
-.productname,
-.productprice,
-.productstatus,
-.productoperations {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  backdrop-filter: blur(10px);
+.productno, .productname, .productprice, .productoperations {
+  font-size: 1rem;
+  color: #1e293b;
+  background: none;
+  padding: 0.5rem 0.2rem;
+  border-radius: 8px;
+  word-break: break-word;
 }
 
-.blogimg {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-}
-
-.productgrid > div,
-.bloggrid > div {
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-}
-
-.productgrid .productdescription,
-.bloggrid .productdescription {
-  margin-top: 20px;
-}
-.bloggrid .productdescription img {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-}
-
-.productgrid .productno,
-.bloggrid .productno {
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-
-.productgrid > div:nth-child(5n),
-.bloggrid > div:nth-child(5n) {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-.outofstock {
-  color: #ff6b6b;
-  font-weight: bold;
-}
-
-.instock {
-  color: #51cf66;
-  font-weight: bold;
+.productdescription {
+  background: rgba(245, 218, 224, 0.13);
+  border-radius: 8px;
+  margin-bottom: 0.3rem;
+  padding: 0.5rem 0.4rem;
 }
 
 .productoperations button {
-  padding: 8px 15px;
+  padding: 8px 18px;
   margin: 0 5px;
   border: none;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 1rem;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(148, 187, 233, 0.10);
 }
 
 .productoperations .updatebtn {
-  background: rgba(34, 197, 94, 0.2);
+  background: linear-gradient(123deg, #94bbe9 19%, #22c55e 100%);
   border: 1px solid #22c55e;
 }
 
 .productoperations .deletebtn {
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid #ef4444;
+  background: linear-gradient(123deg, #f56565 19%, #f5dae0 100%);
+  border: 1px solid #f56565;
 }
 
 .productoperations button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(148, 187, 233, 0.18);
+}
+
+/* Confirmation Alerts */
+.confirmationAlert {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(148, 187, 233, 0.18);
+  padding: 2rem 2.5rem;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+.confirmationAlert h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 1rem;
+}
+
+.confirmationAlert p {
+  color: #334155;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+.confirmationAlert .alertActions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.confirmationAlert button {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirmationAlert .confirmBtn {
+  background: linear-gradient(123deg, #94bbe9 19%, #22c55e 100%);
+  color: white;
+}
+
+.confirmationAlert .cancelBtn {
+  background: linear-gradient(123deg, #f56565 19%, #f5dae0 100%);
+  color: white;
+}
+
+.confirmationAlert button:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(148, 187, 233, 0.18);
+}
+
+@media (max-width: 900px) {
+  .productgrid {
+    grid-template-columns: 1fr 2fr 2fr 1fr 1fr;
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .manageItems {
+    padding: 0.5rem;
+    margin-top: 60px;
+  }
+  .productgrid {
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr 1fr;
+    padding: 0.5rem 0.2rem;
+  }
+  .confirmationAlert {
+    padding: 1rem 0.5rem;
+  }
 }
 
 header {
