@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useAdminAuth from "../../../redux/useAdminAuth";
 import CustomAlert from "../../../components/CustomAlert";
 import axios from "axios";
+import logo from "../../../assets/logo.svg";
 
 export default function AdminSignIn() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function AdminSignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [alert, setAlert] = useState({ type: "", text: "", open: false });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleCloseAlert = () => {
     setAlert((prev) => ({ ...prev, open: false }));
@@ -107,7 +109,10 @@ export default function AdminSignIn() {
         />
       )}
       <div className={styles.card}>
-        <h1 className={styles.heading}>Admin Sign In</h1>
+        <div className={styles.logoContainer}>
+          <img src={logo} alt="Meliora Logo" className={styles.logo} />
+        </div>
+        <h1 className={styles.heading}>Welcome Back</h1>
         <form method='POST' className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <label htmlFor='email' className={styles.label}>
@@ -132,18 +137,27 @@ export default function AdminSignIn() {
             <label htmlFor='password' className={styles.label}>
               Password
             </label>
-            <input
-              type='password'
-              id='password'
-              name='password'
-              className={`${styles.input} ${
-                formData.password &&
-                (isFieldValid("password") ? styles.valid : styles.invalid)
-              }`}
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder='Enter your password'
-            />
+            <div className={styles.passwordContainer}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id='password'
+                name='password'
+                className={`${styles.input} ${
+                  formData.password &&
+                  (isFieldValid("password") ? styles.valid : styles.invalid)
+                }`}
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder='Enter your password'
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? '👁️' : '👁️‍🗨️'}
+              </button>
+            </div>
             {errors.password && (
               <p className={styles.error}>{errors.password}</p>
             )}
