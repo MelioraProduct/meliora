@@ -59,21 +59,24 @@ export default function Dashboard() {
       <div className={styles.maindashboard}>
         <div className={styles.cards}>
           <div className={styles.card}>
-            <h1>{totalOrders}</h1>
-            <h2>Total Orders</h2>
+            <span className={styles.cardIcon} role="img" aria-label="orders">📦</span>
+            <div className={styles.cardNumber}>{totalOrders}</div>
+            <div className={styles.cardLabel}>Total Orders</div>
           </div>
           <div className={styles.card}>
-            <h1>{totalProducts}</h1>
-            <h2>Total Products</h2>
+            <span className={styles.cardIcon} role="img" aria-label="products">🛒</span>
+            <div className={styles.cardNumber}>{totalProducts}</div>
+            <div className={styles.cardLabel}>Total Products</div>
           </div>
           <div className={styles.card}>
-            <h1>${totalRevenue ? totalRevenue.toFixed(2) : "0"}</h1>
-            <h2>Total Revenue</h2>
+            <span className={styles.cardIcon} role="img" aria-label="revenue">💰</span>
+            <div className={styles.cardNumber}>${totalRevenue ? totalRevenue.toFixed(2) : "0"}</div>
+            <div className={styles.cardLabel}>Total Revenue</div>
           </div>
           <div className={styles.lastcard}>
             <div className={styles.first}>
-              <h2>Top Selling Product</h2>
-              <h1>{topSellingProduct.name}</h1>
+              <div className={styles.topSellingTitle}>Top Selling Product</div>
+              <div className={styles.productName}>{topSellingProduct.name}</div>
               <div className={styles.totalOrders}>
                 Total Orders: {totalOrders}
               </div>
