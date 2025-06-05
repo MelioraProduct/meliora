@@ -38,7 +38,7 @@ const ProductCard = memo(({ product }) => {
           width: "100%",
           height: "300px",
           objectFit: "contain",
-          backgroundColor: "#f8fafc",
+          backgroundColor: "white",
           padding: "1rem"
         }}
       />
