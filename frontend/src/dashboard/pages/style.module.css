@@ -434,7 +434,7 @@ button {
 }
 
 .card {
-  background: white;
+  background: linear-gradient(123deg, #f5dae0 19%, #94bbe9 100%);
   padding: 1.5rem;
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -608,11 +608,10 @@ button {
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: 1.2fr 1.8fr;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  overflow: hidden;
 }
 
 .cardone, .cardtwo {
@@ -626,6 +625,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
 }
 
 .cardone > div, .cardtwo > div {
@@ -643,9 +643,6 @@ button {
   .cards {
     grid-template-columns: repeat(2, 1fr);
   }
-  .stats {
-    grid-template-columns: 1fr;
-  }
   .cardone > div, .cardtwo > div {
     min-height: 250px;
   }
@@ -659,34 +656,8 @@ button {
   .cards {
     grid-template-columns: 1fr;
   }
-  .lastcard {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-  .progresscontainer {
-    margin-top: 1rem;
-  }
   .cardone > div, .cardtwo > div {
     min-height: 200px;
-  }
-  .lastcard .first {
-    align-items: center;
-  }
-  .card {
-    min-height: 90px;
-    padding: 1rem;
-  }
-  .cardIcon {
-    font-size: 1.6rem;
-    top: 0.8rem;
-    right: 0.8rem;
-  }
-  .cardNumber {
-    font-size: 2rem;
-  }
-  .cardLabel {
-    font-size: 1rem;
   }
 }
 
