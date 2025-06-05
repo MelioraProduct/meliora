@@ -14,6 +14,7 @@ export default function Orders() {
   // Orders States
   const [orders, setOrders] = useState([]);
   const [changeOrder, setChangeOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchAdditionalData = async (order) => {
     try {
@@ -54,6 +55,7 @@ export default function Orders() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get("/order");
 
@@ -68,6 +70,7 @@ export default function Orders() {
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -237,51 +240,63 @@ export default function Orders() {
           <h1>Manage Orders</h1>
         </div>
 
-        {["pending", "completed", "cancelled"].map((status) => (
-          <div key={status} className={styles.orders}>
-            <div className={styles.productgrid}>
-              <div className={`${styles.header} ${styles.productno}`}>
-                Order No.
-              </div>
-              <div className={`${styles.header} ${styles.productname}`}>
-                Customer Details
-              </div>
-              <div className={`${styles.header} ${styles.productname}`}>
-                Product Details
-              </div>
-              <div className={`${styles.header} ${styles.productname}`}>
-                Status
-              </div>
-              <div className={`${styles.header} ${styles.productoperations}`}>
-                Operations
-              </div>
-              {renderOrdersByStatus(status)}
-            </div>
+        {loading ? (
+          <div className={styles.loadingSpinner}>
+            <div className="spinner"></div>
           </div>
-        ))}
+        ) : (
+          ["pending", "completed", "cancelled"].map((status) => (
+            <div key={status} className={styles.orders}>
+              <div className={styles.productgrid}>
+                <div className={`${styles.header} ${styles.productno}`}>
+                  Order No.
+                </div>
+                <div className={`${styles.header} ${styles.productname}`}>
+                  Customer Details
+                </div>
+                <div className={`${styles.header} ${styles.productname}`}>
+                  Product Details
+                </div>
+                <div className={`${styles.header} ${styles.productname}`}>
+                  Status
+                </div>
+                <div className={`${styles.header} ${styles.productoperations}`}>
+                  Operations
+                </div>
+                {renderOrdersByStatus(status)}
+              </div>
+            </div>
+          ))
+        )}
 
         {showCompleteAlert && (
-          <CompleteOrder
-            onConfirm={() => handleUpdateStatus("completed")}
-            onCancel={() => setShowCompleteAlert(false)}
-            order={changeOrder}
-          />
+          <div className={styles.alertBackground}>
+            <CompleteOrder
+              onConfirm={() => handleUpdateStatus("completed")}
+              onCancel={() => setShowCompleteAlert(false)}
+              order={changeOrder}
+            />
+          </div>
         )}
 
         {showCancelAlert && (
-          <CancelOrder
-            order={changeOrder}
-            onConfirm={() => handleUpdateStatus("cancelled")}
-            onCancel={() => setShowCancelAlert(false)}
-          />
+          <div className={styles.alertBackground}>
+            <CancelOrder
+              order={changeOrder}
+              onConfirm={() => handleUpdateStatus("cancelled")}
+              onCancel={() => setShowCancelAlert(false)}
+            />
+          </div>
         )}
 
         {showDeleteAlert && (
-          <DeleteOrder
-            order={changeOrder}
-            onConfirm={handleDelete}
-            onCancel={() => setShowDeleteAlert(false)}
-          />
+          <div className={styles.alertBackground}>
+            <DeleteOrder
+              order={changeOrder}
+              onConfirm={handleDelete}
+              onCancel={() => setShowDeleteAlert(false)}
+            />
+          </div>
         )}
       </div>
     </>
