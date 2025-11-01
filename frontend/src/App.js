@@ -8,6 +8,7 @@ import ProfileComponent from "./pages/Profile";
 import SignIn from "./pages/LogIn/SignIn";
 import SignUp from "./pages/LogIn/SignUp";
 import OrderDetails from "./pages/OrderDetails/OrderDetails";
+import Portfolio from "./pages/Portfolio/Portfolio";
 import AdminSignIn from "./dashboard/pages/Login/AdminSignIn";
 import Admin from "./dashboard/pages/Admin";
 import Dashboard from "./dashboard/pages/Dashboard";
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
   {
     path: "/order-details",
     element: <OrderDetails />,
+  },
+  {
+    path: "/portfolio",
+    element: <Portfolio />,
   },
   {
     path: "/profile",

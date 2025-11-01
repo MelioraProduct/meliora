@@ -7,6 +7,7 @@ import {
   IconShoppingCart,
   IconBuildingStore,
   IconLibrary,
+  IconBriefcase,
 } from "@tabler/icons-react";
 import useAuth from "../redux/useAuth";
 
@@ -24,6 +25,13 @@ export default function Navbar() {
       link: "/#products",
       icon: (
         <IconShoppingCart className='h-4 w-4 text-gray-600' />
+      ),
+    },
+    {
+      name: "Portfolio",
+      link: "/portfolio",
+      icon: (
+        <IconBriefcase className='h-4 w-4 text-gray-600' />
       ),
     },
     {

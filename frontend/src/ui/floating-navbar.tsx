@@ -3,7 +3,7 @@ import { cn } from "../lib/utils";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import useAuth from "../redux/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const FloatingNav = ({
   navItems,
@@ -18,6 +18,7 @@ export const FloatingNav = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { auth, logout } = useAuth();
   let lastScrollY = 0;
 
@@ -66,18 +67,29 @@ export const FloatingNav = ({
         className
       )}
     >
-      {navItems.map((navItem: any, idx: number) => (
-        <a
-          key={`link=${idx}`}
-          href={navItem.link}
-          className={cn(
-            "relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
-          )}
-        >
-          <span className='block sm:hidden'>{navItem.icon}</span>
-          <span className='hidden sm:block text-sm'>{navItem.name}</span>
-        </a>
-      ))}
+      {navItems.map((navItem: any, idx: number) => {
+        const isActive = location.pathname === navItem.link || 
+                        (navItem.link.startsWith('#') && location.pathname === '/' && window.location.hash === navItem.link);
+        
+        return (
+          <a
+            key={`link=${idx}`}
+            href={navItem.link}
+            className={cn(
+              "relative dark:text-neutral-50 items-center flex space-x-1 dark:hover:text-neutral-300 hover:text-neutral-500 transition-colors",
+              isActive 
+                ? "text-green-600 font-bold dark:text-green-400" 
+                : "text-neutral-600"
+            )}
+          >
+            <span className='block sm:hidden'>{navItem.icon}</span>
+            <span className='hidden sm:block text-sm'>{navItem.name}</span>
+            {isActive && (
+              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500 to-teal-500 rounded-full" />
+            )}
+          </a>
+        );
+      })}
       <button className='border text-xs sm:text-sm capitalize font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full'>
         {auth.isAuthenticated ? (
           <span onClick={logout}>Log Out</span>
@@ -90,4 +102,3 @@ export const FloatingNav = ({
   );
 };
 
-/* Dynamic and auth by Wali Muhammad Github: WaliMuhammadAhmad */
