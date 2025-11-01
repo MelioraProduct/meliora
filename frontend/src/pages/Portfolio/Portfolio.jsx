@@ -3,6 +3,7 @@ import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Navbar from '../../components/Navbar';
 import logo from '../../assets/logoSVG.png';
+import './style.module.css';
 
 const AnimatedSection = ({ children, delay = 0 }) => {
   const controls = useAnimation();
@@ -112,7 +113,7 @@ const Portfolio = () => {
   }, []);
 
   return (
-    <div className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 min-h-screen">
+    <div className="portfolioContainer relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 min-h-screen overflow-x-hidden w-full">
       <Navbar />
 
       {/* Hero Section */}
@@ -174,7 +175,7 @@ const Portfolio = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-              className="text-6xl md:text-9xl font-black text-white mb-10 tracking-[0.15em] drop-shadow-2xl"
+              className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white mb-10 tracking-[0.05em] sm:tracking-[0.1em] md:tracking-[0.15em] drop-shadow-2xl px-4"
               style={{ 
                 fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 textShadow: '0 4px 20px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)'
@@ -196,7 +197,7 @@ const Portfolio = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
-              className="text-2xl md:text-4xl text-white mb-20 font-light px-4 max-w-4xl"
+              className="text-lg sm:text-xl md:text-3xl lg:text-4xl text-white mb-12 sm:mb-20 font-light px-4 max-w-4xl"
               style={{ 
                 fontFamily: 'Georgia, "Times New Roman", serif',
                 fontStyle: 'italic',
@@ -212,27 +213,27 @@ const Portfolio = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
-              className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 text-white text-lg md:text-xl"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 md:gap-6 text-white text-sm sm:text-base md:text-lg flex-wrap px-4 max-w-full"
             >
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 sm:px-5 py-2 sm:py-3 rounded-full text-sm sm:text-base">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                 </svg>
-                <span className="font-bold text-xl">Est. 2009</span>
+                <span className="font-bold text-base sm:text-lg">Est. 2009</span>
               </div>
               
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 sm:px-5 py-2 sm:py-3 rounded-full text-sm sm:text-base">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
                 </svg>
-                <span className="font-semibold">Manufacturers & Suppliers</span>
+                <span className="font-semibold text-xs sm:text-sm md:text-base">Manufacturers & Suppliers</span>
               </div>
               
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 sm:px-5 py-2 sm:py-3 rounded-full text-sm sm:text-base">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <span><span className="font-bold">Lahore</span>, Pakistan</span>
+                <span className="text-xs sm:text-sm md:text-base"><span className="font-bold">Lahore</span>, Pakistan</span>
               </div>
             </motion.div>
           </motion.div>
@@ -240,7 +241,7 @@ const Portfolio = () => {
       </section>
 
       {/* Introduction Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-100 overflow-x-hidden">
         <div className="max-w-6xl mx-auto">
           <AnimatedSection>
             {/* Title */}
@@ -399,7 +400,7 @@ const Portfolio = () => {
               </h2>
               
               {/* Animated Progress Line */}
-              <div className="flex justify-center items-center mt-8 mb-12">
+              <div className="flex justify-center items-center mt-8 mb-12 px-4 w-full">
                 <motion.div 
                   className="relative w-full max-w-2xl h-2 bg-white/20 rounded-full overflow-hidden"
                   initial={{ scaleX: 0 }}
@@ -1940,13 +1941,13 @@ const Portfolio = () => {
               transition={{ duration: 0.8 }}
               className="mt-16 overflow-hidden rounded-2xl shadow-2xl"
             >
-              <div className="overflow-x-auto">
-                <table className="w-full">
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-gray-200">
+                <table className="w-full min-w-[600px]">
                   <thead>
                     <tr className="bg-gradient-to-r from-[#2c5f5f] via-[#3a7070] to-[#4d8f6f]">
-                      <th className="px-6 py-4 text-left text-white font-bold text-lg w-20">#</th>
-                      <th className="px-6 py-4 text-left text-white font-bold text-lg">Company Name</th>
-                      <th className="px-6 py-4 text-left text-white font-bold text-lg">Location</th>
+                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-white font-bold text-sm sm:text-lg w-16 sm:w-20">#</th>
+                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-white font-bold text-sm sm:text-lg">Company Name</th>
+                      <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-white font-bold text-sm sm:text-lg">Location</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white">
@@ -1971,9 +1972,9 @@ const Portfolio = () => {
                         whileHover={{ backgroundColor: "#f0fdf4" }}
                         className="border-b border-gray-200 hover:bg-green-50 transition-colors"
                       >
-                        <td className="px-6 py-5 text-gray-900 font-semibold">{idx + 1}</td>
-                        <td className="px-6 py-5 text-gray-900 font-semibold">{partner.name}</td>
-                        <td className="px-6 py-5 text-gray-700">
+                        <td className="px-3 sm:px-6 py-4 sm:py-5 text-gray-900 font-semibold text-sm sm:text-base">{idx + 1}</td>
+                        <td className="px-3 sm:px-6 py-4 sm:py-5 text-gray-900 font-semibold text-sm sm:text-base">{partner.name}</td>
+                        <td className="px-3 sm:px-6 py-4 sm:py-5 text-gray-700 text-sm sm:text-base">
                           <span className="font-bold text-gray-900">{partner.location}</span>, {partner.country}
                         </td>
                       </motion.tr>
@@ -2023,10 +2024,10 @@ const Portfolio = () => {
           </AnimatedSection>
 
           {/* Content Grid */}
-          <div className="grid md:grid-cols-12 gap-8 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mt-12">
             {/* Left - Brand Logo */}
-            <div className="md:col-span-4 flex flex-col items-center md:items-start">
-              <div className="border-l-4 border-green-600 pl-8">
+            <div className="md:col-span-4 flex flex-col items-center md:items-start px-4 md:px-0">
+              <div className="border-l-4 border-green-600 pl-4 sm:pl-8">
                 {/* Meliora Logo */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -2035,12 +2036,12 @@ const Portfolio = () => {
                   <img 
                     src={logo} 
                     alt="Meliora Logo" 
-                    className="w-64 h-auto filter drop-shadow-2xl"
+                    className="w-48 sm:w-56 md:w-64 h-auto filter drop-shadow-2xl"
                   />
                 </motion.div>
 
                 {/* Tagline */}
-                <p className="text-2xl text-gray-600 italic mt-4">
+                <p className="text-xl sm:text-2xl text-gray-600 italic mt-4">
                   "Always Better"
                 </p>
               </div>
@@ -2120,9 +2121,9 @@ const Portfolio = () => {
           </AnimatedSection>
 
           {/* Contact Grid */}
-          <div className="grid md:grid-cols-2 gap-8 mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-12 sm:mt-16">
             {/* Left - Head Office */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 h-full">
+            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 h-full">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
